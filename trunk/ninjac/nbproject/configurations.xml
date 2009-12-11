@@ -5,7 +5,9 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>block.h</itemPath>
+      <itemPath>constant.h</itemPath>
       <itemPath>expression.h</itemPath>
+      <itemPath>exprstmt.h</itemPath>
       <itemPath>globals.h</itemPath>
       <itemPath>interpreter.h</itemPath>
       <itemPath>parser.h</itemPath>
@@ -19,6 +21,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>block.cpp</itemPath>
+      <itemPath>exprstmt.cpp</itemPath>
       <itemPath>globals.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>parser.cpp</itemPath>

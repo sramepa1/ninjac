@@ -9,8 +9,11 @@
 #define	_INTERPRETER_H
 
 #include "statement.h"
-#include "expression.h"
 #include "block.h"
+#include "exprstmt.h"
+
+#include "expression.h"
+#include "constant.h"
 
 
 #endif	/* _INTERPRETER_H */

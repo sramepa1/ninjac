@@ -12,16 +12,13 @@ using namespace std;
 int handleInteractive();
 int handleScript();
 
-Globals* Globals::inst;
-
 
 int main(int argc, char* argv[]) {
     if(argc > 2 || (argc == 2 && strcmp(argv[1],"-s") != 0)) {
         cout << "Usage: \"" << argv[0] << "\" for interactive mode or \"" << argv[0] << " -s\" for script mode." << endl;
         return 1;
     }
-    
-    Globals::inst = new Globals();
+
     Globals::inst->interactive = argc == 1;
 
     int exitStatus = 1;
@@ -65,7 +62,7 @@ int handleScript() {
     string tmp;
     do {
         getline(cin,tmp);
-        if(cin.fail()) return -1;
+        if(cin.fail() && !cin.eof()) return -1;
         source.append(tmp);
     }while(!cin.eof());
     Globals::inst->getPars()->parse(source);

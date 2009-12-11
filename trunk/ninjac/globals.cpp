@@ -17,3 +17,6 @@ void Globals::resetProg() {
     delete program;
     program = new Block();
 }
+
+
+Globals* const Globals::inst = new Globals();
