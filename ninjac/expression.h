@@ -11,7 +11,7 @@
 class Expression {
 public:
     virtual            ~Expression      () {}
-    virtual double      evaluate        () = 0;
+    virtual double      evaluate        () const = 0;
 };
 
 

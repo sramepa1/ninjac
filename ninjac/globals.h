@@ -17,13 +17,13 @@ public:
 
     friend  int         main        (int argc, char*argv[]);
 
-            bool        ia          () {return interactive;}
-            Block*      getProg     () {return program;}
-            Parser*     getPars     () {return parser;}
+            bool        ia          () const                    {return interactive;}
+            Block*      getProg     () const                    {return program;}
+            Parser*     getPars     () const                    {return parser;}
 
             void        resetProg   ();
 
-    static  Globals* inst;
+    static Globals* const inst;
 
 private:
                 Globals();
