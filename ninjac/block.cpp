@@ -1,7 +1,5 @@
 #include "block.h"
 
-#define DEBUG
-
 #ifdef DEBUG
 #include <iostream>
 #endif
