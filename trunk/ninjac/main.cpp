@@ -5,8 +5,6 @@
 #include "block.h"
 #include "parser.h"
 
-#define DEBUG
-
 using namespace std;
 
 int handleInteractive();

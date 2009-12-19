@@ -1,8 +1,6 @@
 #include "exprstmt.h"
 #include "globals.h"
 
-#define DEBUG 1
-
 #ifdef DEBUG
     #include <iostream>
     using namespace std;

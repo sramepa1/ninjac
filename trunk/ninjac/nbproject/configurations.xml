@@ -43,6 +43,9 @@
       <compileType>
         <ccTool>
           <commandLine>-Wall -pedantic</commandLine>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
         </ccTool>
         <linkerTool>
           <linkerLibItems>

@@ -2,8 +2,6 @@
 #include "globals.h"
 #include "interpreter.h"
 
-#define DEBUG
-
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -13,9 +11,9 @@ using namespace std;
 void Parser::parse(std::string& source) {
 
     #ifdef DEBUG
-        cout << "### Input to parse ---------------" << endl;
-        cout << source << endl;
-        cout << "### End of input -----------------" << endl;
+        cout << "### Input to parse -------------------------" << endl;
+        cout << "### " << source << endl;
+        cout << "### End of input ---------------------------" << endl;
     #endif
 
     // !!!!! =========== DUMMY PARSER =========== !!!!!
