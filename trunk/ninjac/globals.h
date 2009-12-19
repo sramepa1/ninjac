@@ -1,10 +1,3 @@
-/* 
- * File:   globals.h
- * Author: Pavel
- *
- * Created on 9. prosinec 2009, 15:58
- */
-
 #ifndef _GLOBALS_H
 #define	_GLOBALS_H
 
@@ -14,14 +7,13 @@
 class Globals {
 
 public:
-
-    friend  int         main        (int argc, char*argv[]);
-
-            bool        ia          () const                    {return interactive;}
-            Block*      getProg     () const                    {return program;}
-            Parser*     getPars     () const                    {return parser;}
+            bool        ia          () const                    { return interactive; }
+            Block*      getProg     () const                    { return program; }
+            Parser*     getPars     () const                    { return parser; }
 
             void        resetProg   ();
+
+    friend  int         main        (int argc, char*argv[]);
 
     static Globals* const inst;
 
@@ -35,4 +27,3 @@ private:
 };
 
 #endif	/* _GLOBALS_H */
-

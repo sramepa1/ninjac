@@ -1,10 +1,3 @@
-/* 
- * File:   interpreter.h
- * Author: Pavel
- *
- * Created on 8. prosinec 2009, 9:09
- */
-
 #ifndef _INTERPRETER_H
 #define	_INTERPRETER_H
 
@@ -17,4 +10,3 @@
 
 
 #endif	/* _INTERPRETER_H */
-

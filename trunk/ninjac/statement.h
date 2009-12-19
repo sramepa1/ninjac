@@ -1,10 +1,3 @@
-/* 
- * File:   statement.h
- * Author: Pavel
- *
- * Created on 9. prosinec 2009, 16:02
- */
-
 #ifndef _STATEMENT_H
 #define	_STATEMENT_H
 
@@ -15,4 +8,3 @@ public:
 };
 
 #endif	/* _STATEMENT_H */
-
