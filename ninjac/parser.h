@@ -1,10 +1,3 @@
-/* 
- * File:   parser.h
- * Author: Pavel
- *
- * Created on 9. prosinec 2009, 16:26
- */
-
 #ifndef _PARSER_H
 #define	_PARSER_H
 
@@ -17,4 +10,3 @@ public:
 
 
 #endif	/* _PARSER_H */
-

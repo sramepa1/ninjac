@@ -42,6 +42,9 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <incDir>
+            <pElem>C:/MinGW/include/</pElem>
+          </incDir>
           <commandLine>-Wall -pedantic</commandLine>
           <preprocessorList>
             <Elem>DEBUG</Elem>

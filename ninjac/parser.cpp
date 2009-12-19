@@ -1,9 +1,11 @@
+#include <string>
+
 #include "parser.h"
 #include "globals.h"
 #include "interpreter.h"
 
 #ifdef DEBUG
-#include <iostream>
+    #include <iostream>
 #endif
 
 using namespace std;
