@@ -94,7 +94,7 @@ double DivOperator::evaluate() const {
 
     double numer = left->evaluate();
     double denom = right->evaluate();
-    if(fabs(denom) <= Globals::delta) {
+    if(fabs(denom) <= Globals::inst->delta) {
         throw NinjacException(true,"division by zero",l,c);
     }    
 
@@ -105,6 +105,46 @@ double DivOperator::evaluate() const {
     return numer/denom;
 }
 
+double IntDivOperator::evaluate() const {
+    #ifdef DEBUG
+        cout << "### evaluating integer division" << endl;
+        assert(left);
+        assert(right);
+    #endif
+
+    long numer = (long)round(left->evaluate());
+    long denom = (long)round(right->evaluate());
+    if(denom == 0) {
+        throw NinjacException(true,"division by zero",l,c);
+    }
+
+    #ifdef DEBUG
+        cout << "### dividing " << numer << " \\ " << denom << endl;
+    #endif
+
+    return (double)(numer/denom);
+}
+
+double ModuloOperator::evaluate() const {
+    #ifdef DEBUG
+        cout << "### evaluating modulo" << endl;
+        assert(left);
+        assert(right);
+    #endif
+
+    long numer = (long)round(left->evaluate());
+    long denom = (long)round(right->evaluate());
+    if(denom == 0) {
+        throw NinjacException(true,"division by zero",l,c);
+    }
+
+    #ifdef DEBUG
+        cout << "### calculating " << numer << " % " << denom << endl;
+    #endif
+
+    return (double)(numer % denom);
+}
+
 double AndOperator::evaluate() const {
     #ifdef DEBUG
         cout << "### evaluating AND" << endl;
@@ -113,7 +153,7 @@ double AndOperator::evaluate() const {
     #endif
 
     double l = left->evaluate();
-    if(fabs(l) <= Globals::delta) {
+    if(fabs(l) <= Globals::inst->delta) {
         #ifdef DEBUG
             cout << "### short-circuit AND: left operand is false -> returning false" << endl;
         #endif
@@ -134,7 +174,7 @@ double OrOperator::evaluate() const {
     #endif
 
     double l = left->evaluate();
-    if(fabs(l) > Globals::delta) {
+    if(fabs(l) > Globals::inst->delta) {
         #ifdef DEBUG
             cout << "### short-circuit OR: left operand is true -> returning true" << endl;
         #endif
@@ -161,7 +201,7 @@ double EqualsOperator::evaluate() const {
         cout << "### testing whether " << l << " == " << r << endl;
     #endif
 
-    return fabs(l-r) <= Globals::delta ? 1.0 : 0.0;
+    return fabs(l-r) <= Globals::inst->delta ? 1.0 : 0.0;
 }
 
 double NotEqualsOperator::evaluate() const {
@@ -178,7 +218,7 @@ double NotEqualsOperator::evaluate() const {
         cout << "### testing whether " << l << " != " << r << endl;
     #endif
 
-    return fabs(l-r) > Globals::delta ? 1.0 : 0.0;
+    return fabs(l-r) > Globals::inst->delta ? 1.0 : 0.0;
 }
 
 double LessOperator::evaluate() const {
@@ -195,7 +235,7 @@ double LessOperator::evaluate() const {
         cout << "### testing whether " << l << " < " << r << endl;
     #endif
 
-    return l < (r - Globals::delta) ? 1.0 : 0.0;
+    return l < (r - Globals::inst->delta) ? 1.0 : 0.0;
 }
 
 double LTEOperator::evaluate() const {
@@ -212,7 +252,7 @@ double LTEOperator::evaluate() const {
         cout << "### testing whether " << l << " <= " << r << endl;
     #endif
 
-    return l <= (r + Globals::delta) ? 1.0 : 0.0;
+    return l <= (r + Globals::inst->delta) ? 1.0 : 0.0;
 }
 
 double GreaterOperator::evaluate() const {
@@ -229,7 +269,7 @@ double GreaterOperator::evaluate() const {
         cout << "### testing whether " << l << " > " << r << endl;
     #endif
 
-    return l > (r + Globals::delta) ? 1.0 : 0.0;
+    return l > (r + Globals::inst->delta) ? 1.0 : 0.0;
 }
 
 double GTEOperator::evaluate() const {
@@ -246,5 +286,5 @@ double GTEOperator::evaluate() const {
         cout << "### testing whether " << l << " >= " << r << endl;
     #endif
 
-    return l >= (r - Globals::delta) ? 1.0 : 0.0;
+    return l >= (r - Globals::inst->delta) ? 1.0 : 0.0;
 }

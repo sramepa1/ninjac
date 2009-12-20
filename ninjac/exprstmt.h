@@ -7,6 +7,7 @@
 #include "expression.h"
 
 class ExpressionStatement : public Statement{
+    
 public:
                         ExpressionStatement ()                  { expression = NULL; }
     virtual            ~ExpressionStatement ()                  { if(expression != NULL) delete expression; }

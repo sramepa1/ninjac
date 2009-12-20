@@ -4,6 +4,7 @@
 #include <cstring>
 
 class NinjacException {
+    
 public:
                     NinjacException (bool runtime, const char* msg, int line, int column)
 
