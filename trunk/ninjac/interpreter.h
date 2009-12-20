@@ -7,6 +7,7 @@
 
 #include "expression.h"
 #include "constant.h"
+#include "operator.h"
 
 
 #endif	/* _INTERPRETER_H */

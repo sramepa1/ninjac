@@ -10,6 +10,8 @@
       <itemPath>exprstmt.h</itemPath>
       <itemPath>globals.h</itemPath>
       <itemPath>interpreter.h</itemPath>
+      <itemPath>ninjacexcept.h</itemPath>
+      <itemPath>operator.h</itemPath>
       <itemPath>parser.h</itemPath>
       <itemPath>statement.h</itemPath>
     </logicalFolder>
@@ -24,6 +26,7 @@
       <itemPath>exprstmt.cpp</itemPath>
       <itemPath>globals.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>operator.cpp</itemPath>
       <itemPath>parser.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -42,9 +45,6 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <incDir>
-            <pElem>C:/MinGW/include/</pElem>
-          </incDir>
           <commandLine>-Wall -pedantic</commandLine>
           <preprocessorList>
             <Elem>DEBUG</Elem>

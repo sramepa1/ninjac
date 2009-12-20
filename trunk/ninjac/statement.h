@@ -3,7 +3,7 @@
 
 class Statement {
 public:
-    virtual            ~Statement       () {}
+    virtual            ~Statement       ()              { }
     virtual void        execute         () const = 0;
 };
 
