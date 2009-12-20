@@ -8,6 +8,7 @@
 #include "expression.h"
 #include "constant.h"
 #include "operator.h"
+#include "variable.h"
 
 
 #endif	/* _INTERPRETER_H */

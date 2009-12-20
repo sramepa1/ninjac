@@ -2,6 +2,7 @@
 #define	_EXPRESSION_H
 
 class Expression {
+    
 public:
     virtual            ~Expression      ()              { }
     virtual double      evaluate        () const = 0;

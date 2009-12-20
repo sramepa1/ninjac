@@ -4,7 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>assignment.h</itemPath>
       <itemPath>block.h</itemPath>
+      <itemPath>conditional.h</itemPath>
       <itemPath>constant.h</itemPath>
       <itemPath>expression.h</itemPath>
       <itemPath>exprstmt.h</itemPath>
@@ -14,6 +16,7 @@
       <itemPath>operator.h</itemPath>
       <itemPath>parser.h</itemPath>
       <itemPath>statement.h</itemPath>
+      <itemPath>variable.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -22,12 +25,15 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>assignment.cpp</itemPath>
       <itemPath>block.cpp</itemPath>
+      <itemPath>conditional.cpp</itemPath>
       <itemPath>exprstmt.cpp</itemPath>
       <itemPath>globals.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>operator.cpp</itemPath>
       <itemPath>parser.cpp</itemPath>
+      <itemPath>variable.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

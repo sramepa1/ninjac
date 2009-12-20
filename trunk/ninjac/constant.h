@@ -2,6 +2,7 @@
 #define	_CONSTANT_H
 
 class Constant : public Expression{
+    
 public:
                         Constant    (double val)    : value(val)    { }
 

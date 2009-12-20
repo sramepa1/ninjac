@@ -6,6 +6,7 @@
 #include "expression.h"
 
 class Operator : public Expression {
+
 public:
                         Operator    ()              { left = right = NULL; }
     virtual            ~Operator    ();
@@ -44,6 +45,20 @@ public:
 protected:
             int           l;
             int           c;
+};
+
+class IntDivOperator : public DivOperator {
+public:
+                          IntDivOperator (int line, int column) : DivOperator(line,column) { }
+
+    virtual double        evaluate    () const;
+};
+
+class ModuloOperator : public DivOperator {
+public:
+                          ModuloOperator (int line, int column) : DivOperator(line,column) { }
+
+    virtual double        evaluate    () const;
 };
 
 class AndOperator : public Operator {

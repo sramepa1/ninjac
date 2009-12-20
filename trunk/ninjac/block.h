@@ -6,6 +6,7 @@
 #include "statement.h"
 
 class Block : public Statement {
+    
 public:
                         Block       ()                  { }
     virtual            ~Block       ();
