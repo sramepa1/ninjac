@@ -18,5 +18,6 @@ void Globals::resetProg() {
     program = new Block();
 }
 
+double Globals::delta = 1e-12;
 
 Globals* const Globals::inst = new Globals();

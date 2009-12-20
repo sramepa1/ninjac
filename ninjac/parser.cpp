@@ -13,12 +13,15 @@ using namespace std;
 void Parser::parse(std::string& source) {
 
     #ifdef DEBUG
-        cout << "### Input to parse -------------------------" << endl;
+        cout << "### --- Input to parse -------------------------" << endl;
         cout << "### " << source << endl;
-        cout << "### End of input ---------------------------" << endl;
+        cout << "### --- End of input ---------------------------" << endl;
     #endif
 
     // !!!!! =========== DUMMY PARSER =========== !!!!!
-    Globals::inst->getProg()->append(new ExpressionStatement(new Constant(42)));
+    Expression* c1 = new Constant(42);
+    ExpressionStatement* es1 = new ExpressionStatement();
+    es1->setExpr(c1);
+    Globals::inst->getProg()->append(es1);
     
 }

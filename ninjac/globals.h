@@ -7,23 +7,28 @@
 class Globals {
 
 public:
-            bool        ia          () const                    { return interactive; }
-            Block*      getProg     () const                    { return program; }
-            Parser*     getPars     () const                    { return parser; }
+            bool            ia          () const            { return interactive; }
+            Block*          getProg     () const            { return program; }
+            Parser*         getPars     () const            { return parser; }
 
-            void        resetProg   ();
+            void            resetProg   ();
 
-    friend  int         main        (int argc, char*argv[]);
+    friend  int             main        (int argc, char*argv[]);
 
-    static Globals* const inst;
+    static  double          delta;
+
+    static  Globals* const  inst;
 
 private:
-                Globals();
-               ~Globals();
+                            Globals     ();
+                           ~Globals     ();
 
-    bool        interactive;
-    Block*      program;
-    Parser*     parser;
+                            Globals     (const Globals& src)    { }                 //DISABLED
+            Globals         operator=   (const Globals& src)    { return *this; }   //DISABLED
+
+            bool            interactive;
+            Block*          program;
+            Parser*         parser;
 };
 
 #endif	/* _GLOBALS_H */

@@ -31,10 +31,12 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/globals.o \
+	${OBJECTDIR}/operator.o \
 	${OBJECTDIR}/block.o \
-	${OBJECTDIR}/parser.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/exprstmt.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/globals.o \
+	${OBJECTDIR}/parser.o
 
 # C Compiler Flags
 CFLAGS=
@@ -60,31 +62,41 @@ dist/Release/MinGW-Windows/ninjac.exe: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/MinGW-Windows
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ninjac ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/globals.o: nbproject/Makefile-${CND_CONF}.mk globals.cpp 
+${OBJECTDIR}/operator.o: nbproject/Makefile-${CND_CONF}.mk operator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/globals.o globals.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/operator.o operator.cpp
 
 ${OBJECTDIR}/block.o: nbproject/Makefile-${CND_CONF}.mk block.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/block.o block.cpp
 
-${OBJECTDIR}/parser.o: nbproject/Makefile-${CND_CONF}.mk parser.cpp 
+${OBJECTDIR}/exprstmt.o: nbproject/Makefile-${CND_CONF}.mk exprstmt.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/parser.o parser.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/exprstmt.o exprstmt.cpp
 
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
+${OBJECTDIR}/globals.o: nbproject/Makefile-${CND_CONF}.mk globals.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/globals.o globals.cpp
+
+${OBJECTDIR}/parser.o: nbproject/Makefile-${CND_CONF}.mk parser.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/parser.o parser.cpp
+
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
+.clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Release
 	${RM} dist/Release/MinGW-Windows/ninjac.exe
 

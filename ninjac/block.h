@@ -7,7 +7,7 @@
 
 class Block : public Statement {
 public:
-                        Block       ()                  {}
+                        Block       ()                  { }
     virtual            ~Block       ();
 
     virtual void        execute     () const;
@@ -16,6 +16,10 @@ public:
 
 protected:
     std::vector<Statement*> statements;
+
+private:
+                        Block       (const Block& src)  { }                 //DISABLED
+    Block               operator=   (const Block& src)  { return *this; }   //DISABLED
 };
 
 #endif	/* _BLOCK_H */
