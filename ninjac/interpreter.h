@@ -4,6 +4,9 @@
 #include "statement.h"
 #include "block.h"
 #include "exprstmt.h"
+#include "assignment.h"
+#include "conditional.h"
+#include "loop.h"
 
 #include "expression.h"
 #include "constant.h"
