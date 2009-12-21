@@ -8,6 +8,7 @@
       <itemPath>block.h</itemPath>
       <itemPath>conditional.h</itemPath>
       <itemPath>constant.h</itemPath>
+      <itemPath>exitstmt.h</itemPath>
       <itemPath>expression.h</itemPath>
       <itemPath>exprstmt.h</itemPath>
       <itemPath>globals.h</itemPath>
@@ -31,7 +32,9 @@
       <itemPath>conditional.cpp</itemPath>
       <itemPath>exprstmt.cpp</itemPath>
       <itemPath>globals.cpp</itemPath>
+      <itemPath>loop.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>ninjacexcept.cpp</itemPath>
       <itemPath>operator.cpp</itemPath>
       <itemPath>parser.cpp</itemPath>
       <itemPath>variable.cpp</itemPath>

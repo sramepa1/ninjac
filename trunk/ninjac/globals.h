@@ -15,10 +15,11 @@ public:
             Block*          getProg     () const            { return program; }
             Parser*         getPars     () const            { return parser; }
             std::map<std::string,double>*
-                            getVars     ()                  { return globalVars; }
+                            getVars     () const            { return globalVars; }
             std::stack<std::map<std::string,double>*>*
-                            getLocalVars()                  { return localVarStack; }
+                            getLocalVars() const            { return localVarStack; }
 
+            void            assignVar   (std::string var, double val);
             void            resetProg   ();
 
     friend  int             main        (int argc, char*argv[]);

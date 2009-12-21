@@ -38,10 +38,6 @@ protected:
             Expression* toExpr;
             Expression* stepExpr;
 
-            double      from;
-            double      to;
-            double      step;
-
 private:
                         ForLoop         (const ForLoop& src)            { } //DISABLED
             ForLoop     operator=       (const ForLoop& src)            { return *this; } //DISABLED
