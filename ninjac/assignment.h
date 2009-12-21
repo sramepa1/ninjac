@@ -9,12 +9,12 @@
 class Assignment : public Statement {
 
 public:
-                            Assignment  (std::string varName) : vName(varName)  { }
+                            Assignment  (std::string varName) : vName(varName)  { val=NULL; }
     virtual                ~Assignment  ()                      { if(val != NULL) delete val; }
 
     virtual void            execute     () const;
 
-    virtual void            setValue    (Expression* value)     { val = value; }
+    virtual void            setValue    (Expression* value);
 
 protected:
             std::string     vName;

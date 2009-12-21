@@ -3,13 +3,14 @@
 #include <cstring>
 
 #include "globals.h"
-#include "block.h"
 #include "parser.h"
+#include "ninjacexcept.h"
 
 using namespace std;
 
 int handleInteractive();
 int handleScript();
+void printEx(const NinjacException& e);
 
 
 int main(int argc, char* argv[]) {
@@ -29,29 +30,30 @@ int main(int argc, char* argv[]) {
         }else {
             exitStatus = handleScript();
         }
-    }catch(int THIS_IS_ONLY_TEMPORARY) { //... and loads of other exceptions
+    }catch(ExitException e) {
+        cout << "#> Terminating on user request." << endl;
         exitStatus = 0;
+    }catch(NinjacException e) {
+        printEx(e);
+        cout << "#> Terminating." << endl;
     }
     delete Globals::inst;
     return exitStatus;
 }
 
-
-
 int handleInteractive() {
     string tmp;
-    for(;;) {
+    for(;;) { // Will be terminated by user-abort exception thrown when "exit" statement is executed
         getline(cin,tmp);
         if(cin.fail()) return -1;
         try{
             Globals::inst->getPars()->parse(tmp);
             Globals::inst->getProg()->execute();
-        }catch(int THIS_IS_ONLY_TEMPORARY) {
-            cerr << "Does not compute" << endl;
+        }catch(NinjacException e) {
+            printEx(e);
         }
         Globals::inst->resetProg();
     }    
-    // Will be terminated by user-abort exception thrown when "exit" statement is executed
 }
 
 
@@ -67,4 +69,9 @@ int handleScript() {
     Globals::inst->getPars()->parse(source);
     Globals::inst->getProg()->execute();
     return 0;
+}
+
+void printEx(const NinjacException& e) {
+    cout << "#> " << (e.isRuntime() ? "Runtime" : "Parse" ) <<" error: " << e.getMsg() << endl
+     << "#>   on line " << e.getLine() << ", column " << e.getColumn() << endl;
 }

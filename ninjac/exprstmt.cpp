@@ -1,10 +1,10 @@
 #include "exprstmt.h"
 #include "globals.h"
+#include <iostream>
+using namespace std;
 
 #ifdef DEBUG
     #include <assert.h>
-    #include <iostream>
-    using namespace std;
 #endif
 
 void ExpressionStatement::execute() const {

@@ -7,6 +7,7 @@
 #include "assignment.h"
 #include "conditional.h"
 #include "loop.h"
+#include "exitstmt.h"
 
 #include "expression.h"
 #include "constant.h"
