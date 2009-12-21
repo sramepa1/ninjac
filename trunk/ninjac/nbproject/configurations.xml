@@ -12,6 +12,7 @@
       <itemPath>exprstmt.h</itemPath>
       <itemPath>globals.h</itemPath>
       <itemPath>interpreter.h</itemPath>
+      <itemPath>loop.h</itemPath>
       <itemPath>ninjacexcept.h</itemPath>
       <itemPath>operator.h</itemPath>
       <itemPath>parser.h</itemPath>
