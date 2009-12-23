@@ -2,11 +2,16 @@
 #define	_PARSER_H
 
 #include <string>
+#include <set>
 
 class Parser {
     
 public:
-    void            parse       (std::string& source);
+                            Parser      ();
+    void                    parse       (std::string& source);
+
+protected:
+    std::set<std::string>   keywords;
 };
 
 

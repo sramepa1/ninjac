@@ -1,6 +1,8 @@
 #include "exprstmt.h"
 #include "globals.h"
 #include <iostream>
+#include <iomanip>
+#include <cmath>
 using namespace std;
 
 #ifdef DEBUG
@@ -39,4 +41,22 @@ void PrintStatement::execute() {
     #endif
 
     cout << "#> " << expression->evaluate() << endl;
+}
+
+void PrecisionStatement::execute() {
+    #ifdef DEBUG
+        cout << "### executing PrecisionStatement" << endl;
+        assert(expression);
+    #endif
+
+    int result = (int)round(expression->evaluate());
+    if(Globals::inst->ia()) {
+        cout << "#> " << "Precision set to " << result << " digits." << endl;
+    }
+
+    #ifdef DEBUG
+        else cout << "### Precision set to " << result << " digits." << endl;
+    #endif
+
+    cout << setprecision(result);
 }

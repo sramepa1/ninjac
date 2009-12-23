@@ -10,6 +10,36 @@
 
 using namespace std;
 
+Parser::Parser() {
+    keywords.insert("begin");
+    keywords.insert("end");
+
+    keywords.insert("if");
+    keywords.insert("then");
+    keywords.insert("else");
+
+    keywords.insert("while");
+    keywords.insert("do");
+
+    keywords.insert("repeat");
+    keywords.insert("until");
+
+    keywords.insert("for");
+    keywords.insert("from");
+    keywords.insert("to");
+    keywords.insert("step");
+
+    keywords.insert("function");
+    keywords.insert("of");
+    keywords.insert("is");
+    keywords.insert("return");
+
+    keywords.insert("precision");
+
+    keywords.insert("print");
+}
+
+
 void Parser::parse(std::string& source) {
 
     #ifdef DEBUG
