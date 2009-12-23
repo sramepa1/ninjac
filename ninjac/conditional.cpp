@@ -16,7 +16,7 @@ Conditional::~Conditional() {
     if(ifFalse != NULL) delete ifFalse;
 }
 
-void Conditional::execute() const {
+void Conditional::execute() {
     #ifdef DEBUG
         cout << "### executing conditional branch" << endl;
         assert(cond);

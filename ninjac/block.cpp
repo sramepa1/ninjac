@@ -12,7 +12,7 @@ Block::~Block() {
     }
 }
 
-void Block::execute() const {
+void Block::execute() {
     #ifdef DEBUG
         cout << "### commencing block execution" << endl;
     #endif

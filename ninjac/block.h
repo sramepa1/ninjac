@@ -11,7 +11,7 @@ public:
                         Block       ()                  { }
     virtual            ~Block       ();
 
-    virtual void        execute     () const;
+    virtual void        execute     ();
     
     virtual void        append      (Statement* s);
 

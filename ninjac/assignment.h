@@ -12,7 +12,7 @@ public:
                             Assignment  (std::string varName) : vName(varName)  { val=NULL; }
     virtual                ~Assignment  ()                      { if(val != NULL) delete val; }
 
-    virtual void            execute     () const;
+    virtual void            execute     ();
 
     virtual void            setValue    (Expression* value);
 

@@ -6,7 +6,7 @@
 
 class ExitStatement : public Statement {
 public:
-    virtual void    execute () const  { throw ExitException(); }
+    virtual void    execute ()  { throw ExitException(); }
 };
 
 #endif	/* _EXITSTMT_H */

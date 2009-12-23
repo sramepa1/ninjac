@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void Assignment::execute() const {
+void Assignment::execute() {
     #ifdef DEBUG
         cout << "### explicit assignment to variable $" << vName << " - evaluating new value first" << endl;
         assert(val);

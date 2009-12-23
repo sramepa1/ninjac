@@ -13,6 +13,7 @@
 #include "constant.h"
 #include "operator.h"
 #include "variable.h"
+#include "functions.h"
 
 
 #endif	/* _INTERPRETER_H */

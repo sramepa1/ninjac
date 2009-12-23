@@ -7,6 +7,7 @@
 
 #include "parser.h"
 #include "block.h"
+#include "functions.h"
 
 class Globals {
 
@@ -14,10 +15,13 @@ public:
             bool            ia          () const            { return interactive; }
             Block*          getProg     () const            { return program; }
             Parser*         getPars     () const            { return parser; }
+
             std::map<std::string,double>*
                             getVars     () const            { return globalVars; }
             std::stack<std::map<std::string,double>*>*
                             getLocalVars() const            { return localVarStack; }
+            std::map<std::string,func*>*
+                            getFuncs    () const            { return functions; }
 
             void            assignVar   (std::string var, double val);
             void            resetProg   ();
@@ -32,6 +36,8 @@ private:
                             Globals     ();
                            ~Globals     ();
 
+            void            initBuiltIn ();
+
                             Globals     (const Globals& src)    { }                 //DISABLED
             Globals         operator=   (const Globals& src)    { return *this; }   //DISABLED
 
@@ -44,6 +50,8 @@ private:
                             globalVars;
             std::stack<std::map<std::string,double>*>*
                             localVarStack;
+            std::map<std::string,func*>*
+                            functions;
 };
 
 #endif	/* _GLOBALS_H */

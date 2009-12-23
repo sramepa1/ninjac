@@ -25,7 +25,7 @@ public:
                         ForLoop         (std::string varName) : vName(varName) { fromExpr=toExpr=stepExpr=NULL; }
    virtual             ~ForLoop         ();
 
-   virtual  void        execute         () const;
+   virtual  void        execute         ();
 
    virtual  void        setFrom         (Expression* fromExpression)    { fromExpr=fromExpression; }
    virtual  void        setTo           (Expression* toExpression)      { toExpr=toExpression; }
@@ -58,14 +58,14 @@ protected:
 
 
 
-class DoLoop : public CondLoop {
+class RepeatLoop : public CondLoop {
 
 public:
-    virtual void        execute         () const;
+    virtual void        execute         ();
 
 private:
-                        DoLoop          (const DoLoop& src)             { }  //DISABLED
-            DoLoop      operator=       (const DoLoop& src)             { return *this; } //DISABLED
+                        RepeatLoop      (const RepeatLoop& src)         { }  //DISABLED
+            RepeatLoop  operator=       (const RepeatLoop& src)         { return *this; } //DISABLED
 };
 
 
@@ -73,7 +73,7 @@ private:
 class WhileLoop : public CondLoop {
 
 public:
-    virtual void        execute         () const;
+    virtual void        execute         ();
 
 private:
                         WhileLoop       (const WhileLoop& src)          { } //DISABLED

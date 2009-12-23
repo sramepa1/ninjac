@@ -15,7 +15,7 @@ ForLoop::~ForLoop() {
     if(stepExpr != NULL) delete stepExpr;
 }
 
-void ForLoop::execute() const {
+void ForLoop::execute() {
     #ifdef DEBUG
         cout << "### entering for loop, evaluating expressions" << endl;
         assert(fromExpr);
@@ -39,7 +39,7 @@ void ForLoop::execute() const {
 
         #ifdef DEBUG
             cout << "### executing an iteration of for loop, $" << vName << " is " << varValue << ',' << endl
-                 << "###   iteration is from " << from << " to " << " step " << step << endl;
+                 << "###   iteration is from " << from << " to " << to << " step " << step << endl;
         #endif
 
         Globals::inst->assignVar(vName,varValue);
@@ -52,34 +52,34 @@ void ForLoop::execute() const {
     }
 
     #ifdef DEBUG
-        cout << "### leaving for loop, $" << vName << '=' << Variable(vName).evaluate() << " ( " << (up?"> ":"< ") << to << " )" << endl;
+        cout << "### leaving for loop, $" << vName << '=' << Variable(vName).evaluate() << " ( " << (up?">= ":"<= ") << to << " )" << endl;
     #endif
 }
 
 
 
-void DoLoop::execute() const {
+void RepeatLoop::execute() {
     #ifdef DEBUG
-        cout << "### entering do loop" << endl;
+        cout << "### entering repeat loop" << endl;
     #endif
 
     do {
         #ifdef DEBUG
-            cout << "### executing an iteration of do loop" << endl;
+            cout << "### executing an iteration of repeat loop" << endl;
         #endif
 
         stmt->execute();
 
-    }while (fabs(cond->evaluate()) > Globals::inst->delta);
+    }while (fabs(cond->evaluate()) <= Globals::inst->delta);
 
     #ifdef DEBUG
-        cout << "### leaving do loop" << endl;
+        cout << "### leaving repeat loop" << endl;
     #endif
 }
 
 
 
-void WhileLoop::execute() const {
+void WhileLoop::execute() {
     #ifdef DEBUG
         cout << "### entering while loop" << endl;
     #endif
