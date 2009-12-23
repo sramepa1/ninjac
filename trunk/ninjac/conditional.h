@@ -12,7 +12,7 @@ public:
                             Conditional ()      { cond=NULL; ifTrue=ifFalse=NULL; }
     virtual                ~Conditional ();
 
-    virtual void            execute     () const;
+    virtual void            execute     ();
 
     virtual void            setCondition(Expression* condition)     { cond=condition; }
     virtual void            setIfTrue   (Statement* stmt)           { ifTrue=stmt; }

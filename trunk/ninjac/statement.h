@@ -5,7 +5,7 @@ class Statement {
     
 public:
     virtual            ~Statement       ()              { }
-    virtual void        execute         () const = 0;
+    virtual void        execute         () = 0;
 };
 
 #endif	/* _STATEMENT_H */

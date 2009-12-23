@@ -7,7 +7,16 @@ using namespace std;
     #include <assert.h>
 #endif
 
-void ExpressionStatement::execute() const {
+void ExprStatement::setExpr(Expression* expr) {
+    #ifdef DEBUG
+        assert(!expression);
+        assert(expr);
+    #endif
+
+    expression = expr;
+}
+
+void ExpressionStatement::execute() {
     #ifdef DEBUG
         cout << "### executing ExpressionStatement" << endl;
         assert(expression);
@@ -23,11 +32,11 @@ void ExpressionStatement::execute() const {
     #endif
 }
 
-void ExpressionStatement::setExpr(Expression* expr) {
+void PrintStatement::execute() {
     #ifdef DEBUG
-        assert(!expression);
-        assert(expr);
+        cout << "### executing PrintStatement" << endl;
+        assert(expression);
     #endif
-        
-    expression = expr;
+
+    cout << "#> " << expression->evaluate() << endl;
 }

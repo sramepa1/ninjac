@@ -49,6 +49,41 @@ void Parser::parse(std::string& source) {
     if1->setIfTrue(es2);
 
     Globals::inst->getProg()->append(if1);
+
+    FunctionCall* fc1 = new FunctionCall("sqrt",42,42);
+    fc1->addValue(new Constant(9));
+    ExpressionStatement* es3 = new ExpressionStatement();
+    es3->setExpr(fc1);
+
+    Globals::inst->getProg()->append(es3);
+
+    if(Globals::inst->getFuncs()->find("trikratvynasob") == Globals::inst->getFuncs()->end()) {
+        FunctionDeclaration* fd1 = new FunctionDeclaration("trikratvynasob");
+        fd1->addArgument("prvni");
+        fd1->addArgument("druhy");
+        ForLoop* for1 = new ForLoop("i");
+        for1->setFrom(new Constant(1));
+        for1->setTo(new Constant(3));
+        for1->setStep(new Constant(1));
+        Assignment* ass2 = new Assignment("prvni");
+        Operator* mulOper = new MulOperator();
+        mulOper->setLeft(new Variable("prvni"));
+        mulOper->setRight(new Variable("druhy"));
+        ass2->setValue(mulOper);
+        for1->setStatement(ass2);
+        fd1->setBody(for1);
+        fd1->setReturn(new Variable("prvni"));
+
+        Globals::inst->getProg()->append(fd1);
+    }
+    
+    FunctionCall* fc2 = new FunctionCall("trikratvynasob",42,42);
+    fc2->addValue(new Variable("testVar"));
+    fc2->addValue(new Constant(42));
+    ExpressionStatement* es4 = new ExpressionStatement();
+    es4->setExpr(fc2);
+
+    Globals::inst->getProg()->append(es4);
     
     if(source.compare("exit") == 0) {
         Globals::inst->getProg()->append(new ExitStatement());

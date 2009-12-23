@@ -6,11 +6,13 @@
                    projectFiles="true">
       <itemPath>assignment.h</itemPath>
       <itemPath>block.h</itemPath>
+      <itemPath>builtin.h</itemPath>
       <itemPath>conditional.h</itemPath>
       <itemPath>constant.h</itemPath>
       <itemPath>exitstmt.h</itemPath>
       <itemPath>expression.h</itemPath>
       <itemPath>exprstmt.h</itemPath>
+      <itemPath>functions.h</itemPath>
       <itemPath>globals.h</itemPath>
       <itemPath>interpreter.h</itemPath>
       <itemPath>loop.h</itemPath>
@@ -31,6 +33,7 @@
       <itemPath>block.cpp</itemPath>
       <itemPath>conditional.cpp</itemPath>
       <itemPath>exprstmt.cpp</itemPath>
+      <itemPath>functions.cpp</itemPath>
       <itemPath>globals.cpp</itemPath>
       <itemPath>loop.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
