@@ -45,4 +45,17 @@ private:
     PrintStatement      operator=           (const PrintStatement& src)         { return *this; } //DISABLED
 };
 
+
+
+class PrecisionStatement : public ExprStatement {
+
+public:
+                        PrecisionStatement  () : ExprStatement()    { }
+    virtual void        execute             ();
+
+private:
+                        PrecisionStatement  (const PrecisionStatement& src)     { }               //DISABLED
+    PrecisionStatement  operator=           (const PrecisionStatement& src)     { return *this; } //DISABLED
+};
+
 #endif	/* _EXPRSTMT_H */
