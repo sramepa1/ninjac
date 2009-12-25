@@ -26,7 +26,7 @@ void ExpressionStatement::execute() {
 
     double result = expression->evaluate();
     if(Globals::inst->ia()) {
-        cout << "#> " << result << endl;
+        cout << "#> " << (fabs(result) <= Globals::inst->delta ? 0.0 : result) << endl;
     }
 
     #ifdef DEBUG
@@ -40,7 +40,8 @@ void PrintStatement::execute() {
         assert(expression);
     #endif
 
-    cout << "#> " << expression->evaluate() << endl;
+    double result = expression->evaluate();
+    cout << "#> " << (fabs(result) <= Globals::inst->delta ? 0.0 : result) << endl;
 }
 
 void PrecisionStatement::execute() {

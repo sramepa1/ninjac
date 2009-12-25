@@ -1,6 +1,8 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <cstring>
+#include <sstream>
 
 #include "globals.h"
 #include "parser.h"
@@ -21,10 +23,12 @@ int main(int argc, char* argv[]) {
 
     Globals::inst->interactive = argc == 1;
 
+    cout << setprecision(12);
+
     int exitStatus = 1;
     try{
         if(Globals::inst->ia()) {
-            cout << "Welcome to NINJAC 0.1 interactive mode. NINJAC Is Not Just A Calculator!" << endl;
+            cout << "Welcome to NINJAC 0.2 interactive mode. NINJAC Is Not Just A Calculator!" << endl;
             cout << "Enter statements or expressions, \"exit\" statement terminates." << endl;
             exitStatus = handleInteractive();
         }else {
@@ -43,30 +47,24 @@ int main(int argc, char* argv[]) {
 
 int handleInteractive() {
     string tmp;
+    istringstream sin;
     for(;;) { // Will be terminated by user-abort exception thrown when "exit" statement is executed
         getline(cin,tmp);
         if(cin.fail()) return -1;
         try{
-            Globals::inst->getPars()->parse(tmp);
+            sin.str(tmp);
+            Globals::inst->getPars()->parse(sin);
             Globals::inst->getProg()->execute();
         }catch(NinjacException e) {
             printEx(e);
         }
         Globals::inst->resetProg();
+        sin.clear();
     }    
 }
 
-
-
 int handleScript() {
-    string source;
-    string tmp;
-    do {
-        getline(cin,tmp);
-        if(cin.fail() && !cin.eof()) return -1;
-        source.append(tmp);
-    }while(!cin.eof());
-    Globals::inst->getPars()->parse(source);
+    Globals::inst->getPars()->parse(cin);
     Globals::inst->getProg()->execute();
     return 0;
 }
@@ -75,3 +73,8 @@ void printEx(const NinjacException& e) {
     cout << "#> " << (e.isRuntime() ? "Runtime" : "Parse" ) <<" error: " << e.getMsg() << endl
      << "#>   on line " << e.getLine() << ", column " << e.getColumn() << endl;
 }
+
+//TODO remove column numbers, lines in interactive mode
+//TODO strict zero / one in bools
+
+//TODO decide strict zero everywhere?

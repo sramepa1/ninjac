@@ -1,7 +1,7 @@
 #ifndef _CONDITIONAL_H
 #define	_CONDITIONAL_H
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "statement.h"
 #include "expression.h"
