@@ -43,6 +43,7 @@ void Globals::resetProg() {
 
     delete program;
     program = new Block();
+    parser->reset();
 }
 
 void Globals::assignVar(string varName, double value) {

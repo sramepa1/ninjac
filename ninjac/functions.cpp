@@ -4,6 +4,7 @@
 #endif
 
 #include <sstream>
+#include <cmath>
 
 #include "functions.h"
 #include "globals.h"
@@ -126,6 +127,10 @@ double FunctionCall::evaluate() const {
 
     Globals::inst->getLocalVars()->pop();
     delete argmap;
+
+    if(isnan(result) || isinf(result) || isinf(-result)) {
+        throw NinjacException(true,"argument(s) were outside function's domain",line,column);
+    }
 
     return result;
 }
