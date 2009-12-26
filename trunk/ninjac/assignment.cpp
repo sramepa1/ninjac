@@ -17,7 +17,7 @@ void Assignment::execute() {
     double newVal = val->evaluate();
     Globals::inst->assignVar(vName, newVal);
 
-    if(Globals::inst->ia()) {
+    if(Globals::inst->ia() && topLevel) {
         cout << "#> Variable $" << vName << " is now " << newVal << endl;
     }
 }

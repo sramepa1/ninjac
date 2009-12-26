@@ -10,7 +10,7 @@
 #include "tokenizer.h"
 #include "statement.h"
 #include "expression.h"
-#include "operator.h"
+#include "operators.h"
 
 class Parser {
     
@@ -27,6 +27,18 @@ protected:
     Expression*             parseExpr   (std::istream& is);
     Statement*              parseStmt   (std::istream& is);
 
+    Statement*              parseKeyword(std::istream& is);
+    void                    expect      (std::string keyword, std::istream& is);
+    std::string             parseVar    (std::istream& is);
+
+    Statement*              parseAssign (std::istream& is);
+    Statement*              parseBlock  (std::istream& is);
+    Statement*              parseFor    (std::istream& is);
+    Statement*              parseWhile  (std::istream& is);
+    Statement*              parseRepeat (std::istream& is);
+    Statement*              parseFunc   (std::istream& is);
+    Statement*              parseIf     (std::istream& is);
+
     void                    shuntingYard(std::istream& is, std::queue<Token*>& out);
     Operator*               getOperator (std::string oper, int l);
 
@@ -40,6 +52,7 @@ protected:
     std::string             oneCharOper;
 
     int                     line;
+    bool                    topLevel;
 };
 
 #endif	/* _PARSER_H */

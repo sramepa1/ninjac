@@ -45,10 +45,6 @@ Token* Tokenizer::getToken(istream& is, int& line) {
     Token* t = new Token;
     bool comment = false;
 
-    #ifdef DEBUG
-        cout << "### Reading token from stream. is.good() == " << boolalpha << is.good() << noboolalpha << endl;
-    #endif
-
     do {
         is >> c; // formatted input for the purpose of linebreak conversion
         if(!is.good()) {
@@ -153,7 +149,10 @@ void Tokenizer::tokenOK() {
 }
 
 void Tokenizer::reset() {
-    if(cache != NULL) delete cache;
+    if(cache != NULL) {
+        delete cache;
+        cache = NULL;
+    }
     lastToken = Token::END;
 }
 

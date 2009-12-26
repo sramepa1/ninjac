@@ -26,6 +26,8 @@ public:
 
     virtual void    execute             ();
 
+    virtual bool    hasArgument         (std::string arg);
+
     virtual void    addArgument         (std::string arg);
     virtual void    setBody             (Statement* body);
     virtual void    setReturn           (Expression* expr);

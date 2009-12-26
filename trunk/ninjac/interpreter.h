@@ -6,12 +6,12 @@
 #include "exprstmt.h"
 #include "assignment.h"
 #include "conditional.h"
-#include "loop.h"
+#include "loops.h"
 #include "exitstmt.h"
 
 #include "expression.h"
 #include "constant.h"
-#include "operator.h"
+#include "operators.h"
 #include "variable.h"
 #include "functions.h"
 

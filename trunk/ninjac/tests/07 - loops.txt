@@ -1,0 +1,27 @@
+set $var := 42;
+
+while $var > e do
+	set $var := $var - 5;
+
+print $var;	# mela by byt 2
+
+
+repeat
+	set $var := $var * 10;
+	set $iter := $iter + 1
+until $var > 10000;
+
+print $iter;	# iterace by mely byt 4
+
+
+
+for $i from 1 to 10 do print $i;		#vypise cisla 1-10 vcetne
+
+
+for $i from 100 to 10 step 20 do print $i;	#vypise 100, 80, 60, 40 a 20, pak $i prekroci mez
+
+
+for $i from 2 to 200 step 2 do
+	if $i % 3 = 0 then print $i
+	
+#vypise vsechna suda cisla mezi 2 a 200, ktera jsou delitelna tremi (6-198)

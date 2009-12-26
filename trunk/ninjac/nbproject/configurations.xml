@@ -6,7 +6,7 @@
                    projectFiles="true">
       <itemPath>assignment.h</itemPath>
       <itemPath>block.h</itemPath>
-      <itemPath>builtin.h</itemPath>
+      <itemPath>builtins.h</itemPath>
       <itemPath>conditional.h</itemPath>
       <itemPath>constant.h</itemPath>
       <itemPath>exitstmt.h</itemPath>
@@ -15,9 +15,9 @@
       <itemPath>functions.h</itemPath>
       <itemPath>globals.h</itemPath>
       <itemPath>interpreter.h</itemPath>
-      <itemPath>loop.h</itemPath>
+      <itemPath>loops.h</itemPath>
       <itemPath>ninjacexcept.h</itemPath>
-      <itemPath>operator.h</itemPath>
+      <itemPath>operators.h</itemPath>
       <itemPath>parser.h</itemPath>
       <itemPath>statement.h</itemPath>
       <itemPath>tokenizer.h</itemPath>
@@ -36,10 +36,10 @@
       <itemPath>exprstmt.cpp</itemPath>
       <itemPath>functions.cpp</itemPath>
       <itemPath>globals.cpp</itemPath>
-      <itemPath>loop.cpp</itemPath>
+      <itemPath>loops.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>ninjacexcept.cpp</itemPath>
-      <itemPath>operator.cpp</itemPath>
+      <itemPath>operators.cpp</itemPath>
       <itemPath>parser.cpp</itemPath>
       <itemPath>tokenizer.cpp</itemPath>
       <itemPath>variable.cpp</itemPath>
@@ -61,9 +61,6 @@
       <compileType>
         <ccTool>
           <commandLine>-Wall -pedantic</commandLine>
-          <preprocessorList>
-            <Elem>DEBUG</Elem>
-          </preprocessorList>
         </ccTool>
         <linkerTool>
           <linkerLibItems>

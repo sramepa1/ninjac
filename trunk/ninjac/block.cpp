@@ -1,8 +1,7 @@
-#include "block.h"
+#include <iostream>
 
-#ifdef DEBUG
-    #include <iostream>
-#endif
+#include "block.h"
+#include "globals.h"
 
 using namespace std;
 
@@ -25,6 +24,10 @@ void Block::execute() {
         #endif
 
         statements[i]->execute();
+    }
+
+    if(Globals::inst->ia() && topLevel) {
+        cout << "#> OK" << endl;
     }
     
     #ifdef DEBUG

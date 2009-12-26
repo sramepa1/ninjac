@@ -47,8 +47,19 @@ void FunctionDeclaration::addArgument(std::string arg) {
     #ifdef DEBUG
         assert(function);
     #endif
-
+        
     function->args.push_back(arg);
+}
+
+bool FunctionDeclaration::hasArgument(std::string arg) {
+    #ifdef DEBUG
+        assert(function);
+    #endif
+
+    for(vector<string>::iterator i = function->args.begin(); i != function->args.end(); ++i) {
+        if(*i == arg) return true;
+    }
+    return false;
 }
 
 void FunctionDeclaration::setBody(Statement* body) {
@@ -86,6 +97,10 @@ double FunctionCall::evaluate() const {
         ostringstream os;
         os << "argument count mismatch - expected " << expArgs << ", found " << values.size();
         throw NinjacException(true,os.str().c_str(),line);
+    }
+
+    if(Globals::inst->getLocalVars()->size() >= 1000) {
+        throw NinjacException(true,"stack overflow",line);
     }
 
     #ifdef DEBUG

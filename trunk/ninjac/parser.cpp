@@ -1,5 +1,4 @@
 #include <sstream>
-#include <stack>
 
 #include "parser.h"
 #include "globals.h"
@@ -46,6 +45,8 @@ Parser::Parser() {
 
     keywords.insert("set");
 
+    keywords.insert("exit");
+
     oneCharOper = "+-*/\\%&|=<>";
 
     twoCharOper.insert("==");
@@ -61,97 +62,421 @@ Parser::~Parser() {
 }
 
 void Parser::reset() {
+    topLevel = true;
     line = 1;
     tok->reset();
 }
 
 void Parser::parse(istream& is) {
     #ifdef DEBUG
-        cout << "### Commencing parsing" << endl;
+        cout << "### --- Commencing parsing ---" << endl;
     #endif
 
     is >> noskipws;
+    Token* t = tok->getToken(is,line);
 
-    ExpressionStatement* dummy = new ExpressionStatement();
-    dummy->setExpr(parseExpr(is));
-    Globals::inst->getProg()->append(dummy);
+    if(t->type == Token::END) {
+        cout << "#> What am I supposed to do with empty input?!" << endl;
+        return;
+    }
 
-    tok->tokenOK();
-
-    /* !!!!! =========== DUMMY PARSER =========== !!!!!
-
-    ExpressionStatement* es1 = new ExpressionStatement();
-    es1->setExpr(new Constant(42));
-    Globals::inst->getProg()->append(es1);
-    
-    Operator* plus1 = new PlusOperator();
-    plus1->setLeft(new Constant(1));
-    plus1->setRight(new Variable("testVar"));
-    
-    Operator* min1 = new MinusOperator();
-    min1->setLeft(new Constant(13));
-    min1->setRight(plus1);
-
-    Assignment* ass1 = new Assignment("testVar");
-    ass1->setValue(min1);
-
-    Globals::inst->getProg()->append(ass1);
-
-    Operator* eq1 = new EqualsOperator();
-    eq1->setLeft(new Variable("testVar"));
-    eq1->setRight(new Constant(12));
-
-    ExpressionStatement* es2 = new ExpressionStatement();
-    es2->setExpr(new Variable("testVar"));
-
-    Conditional* if1 = new Conditional();
-    if1->setCondition(eq1);
-    if1->setIfTrue(es2);
-
-    Globals::inst->getProg()->append(if1);
-
-    FunctionCall* fc1 = new FunctionCall("sqrt",42,42);
-    fc1->addValue(new Constant(9));
-    ExpressionStatement* es3 = new ExpressionStatement();
-    es3->setExpr(fc1);
-
-    Globals::inst->getProg()->append(es3);
-
-    if(Globals::inst->getFuncs()->find("trikratvynasob") == Globals::inst->getFuncs()->end()) {
-        FunctionDeclaration* fd1 = new FunctionDeclaration("trikratvynasob");
-        fd1->addArgument("prvni");
-        fd1->addArgument("druhy");
-        ForLoop* for1 = new ForLoop("i");
-        for1->setFrom(new Constant(1));
-        for1->setTo(new Constant(3));
-        for1->setStep(new Constant(1));
-        Assignment* ass2 = new Assignment("prvni");
-        Operator* mulOper = new MulOperator();
-        mulOper->setLeft(new Variable("prvni"));
-        mulOper->setRight(new Variable("druhy"));
-        ass2->setValue(mulOper);
-        for1->setStatement(ass2);
-        fd1->setBody(for1);
-        fd1->setReturn(new Variable("prvni"));
-
-        Globals::inst->getProg()->append(fd1);
+    for(;;) {
+        Globals::inst->getProg()->append(parseStmt(is));
+        t = tok->getToken(is,line);
+        if(t->type == Token::END) break;
+        if(t->type != Token::STMT_SEP) {
+            throw NinjacException(false,"expected ';'",t->l);
+        }
+        tok->tokenOK();
+        topLevel = true;
     }
     
-    FunctionCall* fc2 = new FunctionCall("trikratvynasob",42,42);
-    fc2->addValue(new Variable("testVar"));
-    fc2->addValue(new Constant(42));
-    ExpressionStatement* es4 = new ExpressionStatement();
-    es4->setExpr(fc2);
-
-    Globals::inst->getProg()->append(es4);
-    
-    if(source.compare("exit") == 0) {
-        Globals::inst->getProg()->append(new ExitStatement());
-    }
-    */
     #ifdef DEBUG
-        cout << "### Parsing completed" << endl;
+        cout << "### --- Parsing completed ---" << endl;
     #endif
+}
+
+
+Statement* Parser::parseStmt(istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing statement" << endl;
+    #endif
+
+    Token* t = tok->getToken(is,line);
+
+    switch(t->type) {
+        case Token::KEYWORD:
+                            return parseKeyword(is);
+        case Token::FUNC:
+        case Token::LEFT_P:
+        case Token::NUM:
+        case Token::VAR:
+                            ExpressionStatement* es = new ExpressionStatement();
+                            es->setExpr(parseExpr(is));
+                            return es;
+        default:
+                            throw NinjacException(false,"expected statement",t->l);
+    };
+
+    #ifdef DEBUG
+        assert(0);
+    #endif
+    return NULL;
+}
+
+Statement* Parser::parseKeyword(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing a statement beginning with keyword" << endl;
+    #endif
+
+    Token* t = tok->getToken(is,line);
+
+    #ifdef DEBUG
+        assert(t->type == Token::KEYWORD);
+        assert(t->value.size());
+    #endif
+
+    if(t->value == "set") {
+        tok->tokenOK();
+        delete t;
+        return parseAssign(is);
+
+    }else if(t->value == "begin") {
+        tok->tokenOK();
+        delete t;
+        return parseBlock(is);
+
+    }else if(t->value == "for") {
+        tok->tokenOK();
+        delete t;
+        return parseFor(is);
+
+    }else if(t->value == "while") {
+        tok->tokenOK();
+        delete t;        
+        return parseWhile(is);
+
+    }else if(t->value == "repeat") {
+        tok->tokenOK();
+        delete t;
+        return parseRepeat(is);
+
+    }else if(t->value == "function") {
+        if(!topLevel) {
+            throw NinjacException(false,"function declaration must be a top level statement",t->l);
+        }
+        tok->tokenOK();
+        delete t;
+        topLevel = false;
+        return parseFunc(is);
+
+    }else if(t->value == "if") {
+        tok->tokenOK();
+        delete t;
+        return parseIf(is);
+
+    }else if(t->value == "print") {
+        #ifdef DEBUG
+            cout << "### Parsing PrintStatement" << endl;
+        #endif
+        tok->tokenOK();
+        delete t;
+        Expression* expr = parseExpr(is);
+        PrintStatement* p = new PrintStatement();
+        p->setExpr(expr);
+        return p;
+
+    }else if(t->value == "precision") {
+        #ifdef DEBUG
+            cout << "### Parsing PrecisionStatement" << endl;
+        #endif
+        tok->tokenOK();
+        delete t;
+        Expression* expr = parseExpr(is);
+        PrecisionStatement* p = new PrecisionStatement();
+        p->setExpr(expr);
+        return p;
+
+    }else if(t->value == "exit") {
+        #ifdef DEBUG
+            cout << "### Parsing ExitStatement" << endl;
+        #endif
+        tok->tokenOK();
+        delete t;
+        return new ExitStatement();
+
+    }else {
+        ostringstream sout;
+        sout << "unexpected keyword: " << t->value;
+        throw NinjacException(false,sout.str().c_str(),t->l);
+    }
+}
+
+Statement* Parser::parseAssign(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing assignment" << endl;
+    #endif
+    Assignment* ass = new Assignment(parseVar(is),topLevel);
+    try {
+        Token* t = tok->getToken(is, line);
+        if(t->type != Token::ASSIGN) {
+            throw NinjacException(false,"expected assignment operator",t->l);
+        }
+        delete t;
+        tok->tokenOK();
+        Expression* expr = parseExpr(is);
+        ass->setValue(expr);
+    }catch(NinjacException e) {
+        delete ass;
+        throw e;
+    }
+    #ifdef DEBUG
+        cout << "### parsed" << endl;
+    #endif
+    return ass;
+}
+
+Statement* Parser::parseBlock(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing block" << endl;
+    #endif
+    Token* t = tok->getToken(is, line);
+    if(t->type == Token::KEYWORD && t->value == "end") {
+        tok->tokenOK();
+        delete t;
+        return new Block(topLevel);
+    }
+    Block* b = new Block(topLevel);
+    topLevel = false;
+    for(;;) {
+        try {
+            b->append(parseStmt(is));
+            t = tok->getToken(is,line);
+        }catch(NinjacException e) {
+            delete b;
+            throw e;
+        }
+        if(t->type == Token::KEYWORD && t->value == "end") break;
+        if(t->type != Token::STMT_SEP) {
+            throw NinjacException(false,"expected ';'",t->l);
+        }
+        tok->tokenOK();
+        delete t;
+    }
+    tok->tokenOK();
+    delete t;
+    #ifdef DEBUG
+        cout << "### block parsed" << endl;
+    #endif
+    return b;
+}
+
+Statement* Parser::parseFor(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing for-loop" << endl;
+    #endif
+    ForLoop* f = new ForLoop(parseVar(is),topLevel);
+    topLevel = false;
+    try {
+        expect("from",is);
+        f->setFrom(parseExpr(is));
+        expect("to",is);
+        f->setTo(parseExpr(is));
+        Token* t = tok->getToken(is, line);
+        if(t->type != Token::KEYWORD || (t->value != "do" && t->value != "step")) {
+            throw NinjacException(false,"expected \"do\" or \"step\"",t->l);
+        }
+        bool step = t->value == "step";
+        tok->tokenOK();
+        delete t;
+        if(step) {
+            f->setStep(parseExpr(is));
+            expect("do",is);
+        }else {
+            f->setStep(new Constant(1.0));
+        }
+        f->setStatement(parseStmt(is));
+    }catch(NinjacException e) {
+        delete f;
+        throw e;
+    }
+    #ifdef DEBUG
+        cout << "### for-loop parsed" << endl;
+    #endif
+    return f;
+}
+
+Statement* Parser::parseWhile(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing while-loop" << endl;
+    #endif
+    WhileLoop* w = new WhileLoop(topLevel);
+    topLevel = false;
+    try {
+        w->setCond(parseExpr(is));
+        expect("do",is);
+        w->setStatement(parseStmt(is));
+    }catch(NinjacException e) {
+        delete w;
+        throw e;
+    }
+    #ifdef DEBUG
+        cout << "### while-loop parsed" << endl;
+    #endif
+    return w;
+}
+
+Statement* Parser::parseRepeat(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing repeat-loop" << endl;
+    #endif
+    RepeatLoop* r = new RepeatLoop(topLevel);
+    Block* b = new Block(false);
+    r->setStatement(b);
+    topLevel = false;
+    try {
+        Token* t;
+        for(;;) {
+            b->append(parseStmt(is));
+            t = tok->getToken(is,line); 
+            if(t->type == Token::KEYWORD && t->value == "until") break;
+            if(t->type != Token::STMT_SEP) {
+                throw NinjacException(false,"expected ';'",t->l);
+            }
+            tok->tokenOK();
+            delete t;
+        }
+        tok->tokenOK();
+        delete t;
+        r->setCond(parseExpr(is));
+    }catch(NinjacException e) {
+        delete r;
+        throw e;
+    }
+    #ifdef DEBUG
+        cout << "### repeat-loop parsed" << endl;
+    #endif
+    return r;
+}
+
+Statement* Parser::parseFunc(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing function declaration" << endl;
+    #endif
+    Token* t = tok->getToken(is,line);
+    if(t->type != Token::FUNC) {
+        throw NinjacException(false,"expected function name",t->l);
+    }
+    if(Globals::inst->getFuncs()->count(t->value) != 0) {
+        ostringstream sout;
+        sout << "function " <<t->value << " is already declared";
+        throw NinjacException(false,sout.str().c_str(),t->l);
+    }
+    FunctionDeclaration* fd = new FunctionDeclaration(t->value);
+    Block* b = new Block(false);
+    fd->setBody(b);
+    tok->tokenOK();
+    delete t;
+    try {
+        t = tok->getToken(is, line);
+        if(t->type != Token::KEYWORD || (t->value != "of" && t->value != "is")) {
+            throw NinjacException(false,"expected \"of\" or \"is\"",t->l);
+        }
+        bool args = t->value == "of";
+        tok->tokenOK();
+        delete t;
+        if(args) {
+            for(;;) {
+                string arg = parseVar(is);
+                if(fd->hasArgument(arg)) {
+                    throw NinjacException(false,"argument name duplication",line);
+                }
+                fd->addArgument(arg);
+                t = tok->getToken(is, line);
+                if(t->type == Token::KEYWORD && t->value == "is") {
+                    tok->tokenOK();
+                    delete t;
+                    break;
+                }
+                if(t->type != Token::ARG_SEP) {
+                    throw NinjacException(false,"expected argument separator or \"is\"",t->l);
+                }
+                tok->tokenOK();
+                delete t;
+            }
+        }
+        t = tok->getToken(is,line);
+        if(t->type != Token::KEYWORD || t->value != "return") {
+            for(;;) {
+                b->append(parseStmt(is));
+                t = tok->getToken(is,line);
+                if(t->type == Token::KEYWORD && t->value == "return") break;
+                if(t->type != Token::STMT_SEP) {
+                    throw NinjacException(false,"expected ';'",t->l);
+                }
+                tok->tokenOK();
+                delete t;
+            }
+        }
+        tok->tokenOK();
+        delete t;
+        fd->setReturn(parseExpr(is));
+    }catch(NinjacException e) {
+        delete fd;
+        throw e;
+    }
+    #ifdef DEBUG
+        cout << "### function declaration parsed" << endl;
+    #endif
+    return fd;
+}
+
+Statement* Parser::parseIf(std::istream& is) {
+    #ifdef DEBUG
+        cout << "### Parsing conditional branch" << endl;
+    #endif
+    Conditional* c = new Conditional(topLevel);
+    topLevel = false;
+    try{
+        c->setCondition(parseExpr(is));
+        expect("then",is);
+        c->setIfTrue(parseStmt(is));
+        Token* t = tok->getToken(is, line);
+        if(t->type == Token::KEYWORD && t->value == "else") {
+            tok->tokenOK();
+            delete t;
+            c->setIfFalse(parseStmt(is));
+        }
+    }catch(NinjacException e) {
+        delete c;
+        throw e;
+    }
+    #ifdef DEBUG
+        cout << "### conditional branch parsed" << endl;
+    #endif
+    return c;
+}
+
+void Parser::expect(string keyword, istream& is) {
+    Token* t = tok->getToken(is, line);
+    if(t->type != Token::KEYWORD || t->value != keyword) {
+        ostringstream sout;
+        sout << "expected \"" << keyword << '\"';
+        throw NinjacException(false,sout.str().c_str(),t->l);
+    }
+    tok->tokenOK();
+    delete t;
+}
+
+string Parser::parseVar(std::istream& is) {
+    Token* t = tok->getToken(is, line);
+    if(t->type != Token::VAR) {
+        throw NinjacException(false,"expected a variable",t->l);
+    }
+    tok->tokenOK();
+    string s = t->value;
+    delete t;
+    return s;
 }
 
 Expression* Parser::parseExpr(istream& is) {
@@ -226,6 +551,7 @@ Expression* Parser::parseExpr(istream& is) {
                                 stack.push(fc);
                                 break;
         }
+        delete t;
         out.pop();
     }while(!out.empty());
 
@@ -256,10 +582,6 @@ void Parser::clearExprs(stack<Expression*>& stack, queue<Token*>& queue) {
     }
 }
 
-Statement* Parser::parseStmt(istream& is) {
-    return NULL;
-}
-
 void Parser::shuntingYard(istream& is, queue<Token*>& out) {
     std::stack<Token*> stack;
     std::stack<int> argCntStack;
@@ -267,7 +589,7 @@ void Parser::shuntingYard(istream& is, queue<Token*>& out) {
 
     try {
         do {
-            Token* t = tok->getToken(is,line); // TODO catch!
+            Token* t = tok->getToken(is,line);
             #ifdef DEBUG
                 cout << "### received token: " << t->value << " (length " << t->value.length() << ") of type " << t->type << endl;
             #endif
@@ -296,6 +618,7 @@ void Parser::shuntingYard(istream& is, queue<Token*>& out) {
                                     #ifdef DEBUG
                                         assert(stack.top()->type == Token::LEFT_P);
                                     #endif
+                                    delete stack.top();
                                     stack.pop();
                                     if(!stack.empty() && stack.top()->type == Token::FUNC) {
                                         Token* f = stack.top();
@@ -304,6 +627,7 @@ void Parser::shuntingYard(istream& is, queue<Token*>& out) {
                                         out.push(f);
                                         stack.pop();
                                     }
+                                    delete t;
                                     tok->tokenOK();
                                     break;
                 case Token::OPER:
@@ -327,6 +651,7 @@ void Parser::shuntingYard(istream& is, queue<Token*>& out) {
                                     int tmp = argCntStack.top()+1;
                                     argCntStack.pop();
                                     argCntStack.push(tmp);
+                                    delete t;
                                     tok->tokenOK();
                                     break;
                 default:

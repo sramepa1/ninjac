@@ -8,7 +8,7 @@
 class Block : public Statement {
     
 public:
-                        Block       ()                  { }
+                        Block       (bool top) : topLevel(top)  { }
     virtual            ~Block       ();
 
     virtual void        execute     ();
@@ -17,10 +17,11 @@ public:
 
 protected:
     std::vector<Statement*> statements;
+    bool                    topLevel;
 
 private:
-                        Block       (const Block& src)  { }                 //DISABLED
-    Block               operator=   (const Block& src)  { return *this; }   //DISABLED
+                        Block       (const Block& src)          { }                 //DISABLED
+    Block               operator=   (const Block& src)          { return *this; }   //DISABLED
 };
 
 #endif	/* _BLOCK_H */

@@ -19,7 +19,7 @@ public:
 
 class BuiltInRand : public Expression {
 public:
-    virtual double evaluate () const { return (double)rand() / (double)RAND_MAX; }
+    virtual double evaluate () const { return (double)rand() / RAND_MAX; }
 };
 
 class BuiltInNot : public Expression {

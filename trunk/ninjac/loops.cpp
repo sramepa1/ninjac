@@ -1,13 +1,14 @@
-#ifdef DEBUG
-    #include <iostream>
-    #include <assert.h>
-    using namespace std;
+#ifdef DEBUG    
+    #include <assert.h>    
 #endif
 
+#include <iostream>
 #include <cmath>
 
-#include "loop.h"
+#include "loops.h"
 #include "globals.h"
+
+using namespace std;
 
 ForLoop::~ForLoop() {
     if(fromExpr != NULL) delete fromExpr;
@@ -51,6 +52,10 @@ void ForLoop::execute() {
         Globals::inst->assignVar(vName,from);
     }
 
+    if(Globals::inst->ia() && topLevel) {
+        cout << "#> OK" << endl;
+    }
+
     #ifdef DEBUG
         cout << "### leaving for loop, $" << vName << '=' << Variable(vName).evaluate() << " ( " << (up?">= ":"<= ") << to << " )" << endl;
     #endif
@@ -72,6 +77,10 @@ void RepeatLoop::execute() {
 
     }while (fabs(cond->evaluate()) <= Globals::inst->delta);
 
+    if(Globals::inst->ia() && topLevel) {
+        cout << "#> OK" << endl;
+    }
+
     #ifdef DEBUG
         cout << "### leaving repeat loop" << endl;
     #endif
@@ -91,6 +100,10 @@ void WhileLoop::execute() {
         #endif
 
         stmt->execute();
+    }
+
+    if(Globals::inst->ia() && topLevel) {
+        cout << "#> OK" << endl;
     }
 
     #ifdef DEBUG

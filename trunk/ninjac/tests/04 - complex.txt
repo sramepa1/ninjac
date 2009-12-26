@@ -1,0 +1,3 @@
+#trochu slozitejsi vyraz - vrati priblizne  -125.99
+
+print -3 * ln(exp(42)) + 2/ (350 * 3 / 5)

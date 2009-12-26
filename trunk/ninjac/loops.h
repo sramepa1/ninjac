@@ -8,13 +8,14 @@
 class Loop : public Statement {
 
 public:
-                        Loop            () : stmt(NULL)                 { }
+                        Loop            (bool top) : stmt(NULL),topLevel(top) { }
     virtual            ~Loop            ()                              { if(stmt != NULL) delete stmt;}
 
     virtual void        setStatement    (Statement* statement)          { stmt=statement; }
 
 protected:
             Statement*  stmt;
+            bool        topLevel;
 };
 
 
@@ -22,7 +23,7 @@ protected:
 class ForLoop : public Loop {
 
 public:
-                        ForLoop         (std::string varName) : vName(varName) { fromExpr=toExpr=stepExpr=NULL; }
+                        ForLoop         (std::string varName, bool top) : Loop(top), vName(varName) { fromExpr=toExpr=stepExpr=NULL; }
    virtual             ~ForLoop         ();
 
    virtual  void        execute         ();
@@ -39,8 +40,8 @@ protected:
             Expression* stepExpr;
 
 private:
-                        ForLoop         (const ForLoop& src)            { } //DISABLED
-            ForLoop     operator=       (const ForLoop& src)            { return *this; } //DISABLED
+                        ForLoop         (const ForLoop& src):Loop(src.topLevel) { } //DISABLED
+            ForLoop     operator=       (const ForLoop& src)             { return *this; } //DISABLED
 };
 
 
@@ -48,7 +49,7 @@ private:
 class CondLoop : public Loop {
 
 public:
-                        CondLoop        ()                              { cond=NULL; }
+                        CondLoop        (bool top) : Loop(top)          { cond=NULL; }
     virtual            ~CondLoop        ()                              { if(cond!=NULL) delete cond; }
     virtual void        setCond         (Expression* condition)         { cond = condition; }
 
@@ -61,10 +62,11 @@ protected:
 class RepeatLoop : public CondLoop {
 
 public:
+                        RepeatLoop      (bool top) : CondLoop(top)      { }
     virtual void        execute         ();
 
 private:
-                        RepeatLoop      (const RepeatLoop& src)         { }  //DISABLED
+                        RepeatLoop      (const RepeatLoop& src):CondLoop(src.topLevel) { }  //DISABLED
             RepeatLoop  operator=       (const RepeatLoop& src)         { return *this; } //DISABLED
 };
 
@@ -73,10 +75,11 @@ private:
 class WhileLoop : public CondLoop {
 
 public:
+                        WhileLoop       (bool top) : CondLoop(top)      { }
     virtual void        execute         ();
 
 private:
-                        WhileLoop       (const WhileLoop& src)          { } //DISABLED
+                        WhileLoop       (const WhileLoop& src):CondLoop(src.topLevel) { } //DISABLED
             WhileLoop   operator=       (const WhileLoop& src)          { return *this; } //DISABLED
 };
 

@@ -9,7 +9,7 @@
 class Assignment : public Statement {
 
 public:
-                            Assignment  (std::string varName) : vName(varName)  { val=NULL; }
+                            Assignment  (std::string varName, bool top) : vName(varName),topLevel(top) { val=NULL; }
     virtual                ~Assignment  ()                      { if(val != NULL) delete val; }
 
     virtual void            execute     ();
@@ -19,6 +19,8 @@ public:
 protected:
             std::string     vName;
             Expression*     val;
+
+            bool            topLevel;
 
 private:
                             Assignment  (const Assignment& src) { } //DISABLED

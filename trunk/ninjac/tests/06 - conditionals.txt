@@ -1,0 +1,12 @@
+set $var := 42;
+
+if $var > 39 then 
+	print 1;		#vypise se
+
+if $var + 100 >= 1000 then
+	print 10000000;		#nevypise se
+
+if exp($var) < 1000 then
+	print 1000
+else
+	print e		#vypise se konstanta e

@@ -1,0 +1,45 @@
+# rekurze funguje, ale pozor - zasobnik je jen na 1000 volani
+
+# zacneme klasikou
+
+function fact of $num is
+	if $num <= 1 then
+		set $result := 1
+	else
+		set $result := $num * fact($num - 1)
+	return $result;
+		
+print fact(5);		# 120
+
+
+
+# jde to i krizem - proto se existance volane funkce testuje az za behu (dopredne deklarace si prosim nechte v cecku)
+
+function foo of $foo is
+	if $foo <= 0 then
+		set $res := 1
+	else
+		set $res := bar($foo - 1)
+	return $res;
+
+function bar of $bar is
+	if $bar <= 1 then
+		set $res := 0
+	else
+		set $res := foo($bar) - 1 
+	return $res;
+
+print foo(3);		# vrati to -1
+
+
+
+# a jeste jedna stara znama a neefektivni klasika:
+
+function recFibs of $num is
+	if $num <= 2 then
+		set $ret : 1
+	else
+		set $ret : recFibs($num - 2) + recFibs($num - 1)
+	return $ret;
+
+print recFibs(6)	# samozrejme 8
