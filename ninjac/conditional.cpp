@@ -1,13 +1,14 @@
 #include <cmath>
+#include <iostream>
 
 #include "conditional.h"
 #include "expression.h"
 #include "globals.h"
 
+using namespace std;
+
 #ifdef DEBUG
-    #include <iostream>
     #include <assert.h>
-    using namespace std;
 #endif
 
 Conditional::~Conditional() {
@@ -44,4 +45,8 @@ void Conditional::execute() {
         cout << "### condition evaluated to false and there is no alternate path" << endl;
     }
     #endif
+
+    if(Globals::inst->ia() && topLevel) {
+        cout << "#> OK" << endl;
+    }
 }

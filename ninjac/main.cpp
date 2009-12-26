@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     int exitStatus = 1;
     try{
         if(Globals::inst->ia()) {
-            cout << "Welcome to NINJAC 0.2 interactive mode. NINJAC Is Not Just A Calculator!" << endl;
+            cout << "Welcome to NINJAC 0.5 beta interactive mode. NINJAC Is Not Just A Calculator!" << endl;
             cout << "Enter statements or expressions, \"exit\" statement terminates." << endl;
             exitStatus = handleInteractive();
         }else {

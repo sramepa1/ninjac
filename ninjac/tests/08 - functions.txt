@@ -1,0 +1,72 @@
+function constFunc is
+	return 42;
+
+print constFunc + 5;	# 47
+
+
+function square of $num is
+	return $num * $num;
+
+print square(7) - 2;	# taky 47
+print $num;		# nula - je to lokalni promenna, globalne nebyla inicializovana
+
+
+set $num := 100;
+print $num;		# 100
+
+
+print square(3-5);	# 4
+print $num;		# 100 - lokalni promenna globalni promennou zastini
+
+
+print square($num);	# 10000
+print $num;		# 100 - ani tohle neni problem
+
+
+
+function test of $x is
+	return $x + $num;
+
+print test(5);		#105 - nic ji nezastini -> je videt
+print test($num);	#200
+print $num;		#100 - no problemo, vola se hodnotou
+
+
+print square(test(-80));# 400 - videt je globalni $num, ne lokalni ve fci square
+
+
+# funkce s vedlejsim efektem - navratova hodnota me nezajima, ale deklarovana byt musi
+function addToNum of $x is
+	set $num := $num + $x
+	return 0;
+
+addToNum(42);
+print $num;		#142
+
+addToNum($num);
+print $num;		#284 - normalne projde
+
+
+# a vedlejsi efekt podruhe, v kombinaci se zastinenim
+function printPlusOne of $num is
+	begin
+		set $num := $num + 1; # parametr je taky promenna - lze jeho hodnotu menit
+		print $num
+	end
+	return 0;
+
+printPlusOne(1);	# vypise 2
+print $num;		# 284 - beze zmeny, zastinena parametrem
+
+printPlusOne($num);	# 285 - normalne projde
+print $num;		# 284 - beze zmeny, stale zastinena, vola se hodnotou
+
+
+# a pro uplnost funkce vice promennych
+function randAdd of $one, $two, $three is
+  return $one + $two + $three + rand;
+  
+print randAdd(10,20,30) # vypise neco mezi 60 a 61
+
+
+

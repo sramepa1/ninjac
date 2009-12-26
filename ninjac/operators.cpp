@@ -6,7 +6,7 @@
     using namespace std;
 #endif
 
-#include "operator.h"
+#include "operators.h"
 #include "globals.h"
 #include "ninjacexcept.h"
 

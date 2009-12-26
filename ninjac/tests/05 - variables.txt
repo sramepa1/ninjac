@@ -1,0 +1,5 @@
+print $var; 		# neinicializovana promenna je nula
+set $var := $var + 42;
+print $var; 		#42
+set $another := 111/7;
+print $var * $another 	#666

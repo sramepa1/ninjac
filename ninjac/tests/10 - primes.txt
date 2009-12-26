@@ -1,0 +1,19 @@
+# uzaviram tesikem kombinujicim cykly s funkcemi
+# druha funkce vypise pocet prvocisel mezi jednickou a svym parametrem (vcetne)
+
+function isPrime of $num is
+	set $divisors := 0;
+	for $i from 1 to $num do
+		if $num % $i = 0 then
+			set $divisors := $divisors + 1
+	return $divisors == 2;
+
+function countPrimes of $num is
+	for $i from 1 to $num do
+		if isPrime($i) then
+			set $cnt:$cnt+1
+	return $cnt;
+
+print countPrimes(1000)
+
+#vrati 168

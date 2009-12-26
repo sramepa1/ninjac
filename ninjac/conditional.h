@@ -9,7 +9,7 @@
 class Conditional : public Statement {
 
 public:
-                            Conditional ()      { cond=NULL; ifTrue=ifFalse=NULL; }
+                            Conditional (bool top) : topLevel(top)  { cond=NULL; ifTrue=ifFalse=NULL; }
     virtual                ~Conditional ();
 
     virtual void            execute     ();
@@ -22,6 +22,8 @@ protected:
             Expression*     cond;
             Statement*      ifTrue;
             Statement*      ifFalse;
+
+            bool            topLevel;
 
 private:
                             Conditional (const Conditional& src)    { } //DISABLED

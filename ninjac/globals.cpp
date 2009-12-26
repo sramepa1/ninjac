@@ -2,16 +2,19 @@
     #include <iostream>
 #endif
 
+#include <cstdlib>
+#include <ctime>
+
 #include "globals.h"
 #include "expression.h"
-#include "builtin.h"
+#include "builtins.h"
 
 using namespace std;
 
 Globals::Globals() {
     interactive = true;
     parser = new Parser();
-    program = new Block();
+    program = new Block(false); // silent
     delta = 1e-12;
     globalVars = new map<string,double>();
     localVarStack = new stack<map<string,double>*>();
@@ -25,9 +28,8 @@ Globals::~Globals() {
     delete program;
     delete globalVars;
     while(!localVarStack->empty()) {
-        map<string,double>* tmp = localVarStack->top();
+        delete localVarStack->top();
         localVarStack->pop();
-        delete tmp;
     }
     delete localVarStack;
     for(map<string,func*>::iterator i = functions->begin(); i != functions->end(); ++i) {
@@ -42,13 +44,19 @@ void Globals::resetProg() {
     #endif
 
     delete program;
-    program = new Block();
+    program = new Block(false);
+
+    while(!localVarStack->empty()) {
+        delete localVarStack->top();
+        localVarStack->pop();
+    }
+
     parser->reset();
 }
 
 void Globals::assignVar(string varName, double value) {
 
-    if(getLocalVars()->empty() || (getVars()->count(varName) == 1) ) {
+    if(getLocalVars()->empty() || (getVars()->count(varName) == 1 && getLocalVars()->top()->count(varName) == 0) ) {
         #ifdef DEBUG
             cout << "### assigned global variable $" << varName;
         #endif
@@ -86,6 +94,9 @@ void Globals::initBuiltIn() {
     temp->body = NULL;
     temp->retExpr = new BuiltInRand();
     (*functions)["rand"] = temp;
+
+    srand(time(NULL));
+    rand();rand();rand();
 
 
 
