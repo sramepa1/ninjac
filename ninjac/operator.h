@@ -8,11 +8,11 @@
 class Operator : public Expression {
 
 public:
-                        Operator    ()              { left = right = NULL; }
-    virtual            ~Operator    ();
+                        Operator        ()              { left = right = NULL; }
+    virtual            ~Operator        ();
 
-    virtual void        setLeft     (Expression* l);
-    virtual void        setRight    (Expression* r);
+    virtual void        setLeft         (Expression* l);
+    virtual void        setRight        (Expression* r);
 
 protected:
             Expression* left;
@@ -23,82 +23,81 @@ protected:
 
 class PlusOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class MinusOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class MulOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class DivOperator : public Operator {
 public:
-                          DivOperator (int line, int column) : l(line), c(column) { }
+                          DivOperator   (int line) : l(line) { }
 
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 
 protected:
             int           l;
-            int           c;
 };
 
 class IntDivOperator : public DivOperator {
 public:
-                          IntDivOperator (int line, int column) : DivOperator(line,column) { }
+                          IntDivOperator (int line) : DivOperator(line) { }
 
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class ModuloOperator : public DivOperator {
 public:
-                          ModuloOperator (int line, int column) : DivOperator(line,column) { }
+                          ModuloOperator (int line) : DivOperator(line) { }
 
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class AndOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class OrOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class EqualsOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class NotEqualsOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class LessOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class LTEOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class GreaterOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 class GTEOperator : public Operator {
 public:
-    virtual double        evaluate    () const;
+    virtual double        evaluate      () const;
 };
 
 #endif	/* _OPERATOR_H */

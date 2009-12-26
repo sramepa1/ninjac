@@ -12,7 +12,6 @@ struct Token {
             std::string value;
 
             int         l;
-            int         c;
 
     unsigned int        argc;
 
@@ -37,7 +36,7 @@ public:
                         Tokenizer       (Parser* p);
                        ~Tokenizer       ();
 
-    Token*              getToken        (std::istream& is, int& column, int& line);
+    Token*              getToken        (std::istream& is, int& line);
     void                tokenOK         ();
 
     void                reset           ();

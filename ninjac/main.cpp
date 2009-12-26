@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
         exitStatus = 0;
     }catch(NinjacException e) {
         printEx(e);
-        cout << "#> Terminating." << endl;
+        cout << "#>   on line " << e.getLine() << ". Terminating." << endl;
     }
     delete Globals::inst;
     return exitStatus;
@@ -70,11 +70,5 @@ int handleScript() {
 }
 
 void printEx(const NinjacException& e) {
-    cout << "#> " << (e.isRuntime() ? "Runtime" : "Parse" ) <<" error: " << e.getMsg() << endl
-     << "#>   on line " << e.getLine() << ", column " << e.getColumn() << endl;
+    cout << "#> " << (e.isRuntime() ? "Runtime" : "Parse" ) <<" error: " << e.getMsg() << endl;
 }
-
-//TODO remove column numbers, lines in interactive mode
-//TODO strict zero / one in bools
-
-//TODO decide strict zero everywhere?

@@ -43,7 +43,7 @@ private:
 
 class FunctionCall : public Expression {
 public:
-                    FunctionCall        (std::string funcName, int lin, int col) : name(funcName), line(lin), column(col) { }
+                    FunctionCall        (std::string funcName, int lin) : name(funcName), line(lin) { }
     virtual        ~FunctionCall        ();
 
     virtual double  evaluate            () const;
@@ -55,7 +55,6 @@ protected:
     std::vector<Expression*>
                     values;
     int             line;
-    int             column;
 
 private:
                     FunctionCall        (const FunctionCall& src)       { }                 //DISABLED

@@ -5,6 +5,7 @@
 #include <string>
 #include <set>
 #include <queue>
+#include <stack>
 
 #include "tokenizer.h"
 #include "statement.h"
@@ -27,7 +28,10 @@ protected:
     Statement*              parseStmt   (std::istream& is);
 
     void                    shuntingYard(std::istream& is, std::queue<Token*>& out);
-    Operator*               getOperator (std::string oper, int l, int c);
+    Operator*               getOperator (std::string oper, int l);
+
+    void                    clearTokens (std::stack<Token*>& stack, std::queue<Token*>& queue);
+    void                    clearExprs  (std::stack<Expression*>& stack, std::queue<Token*>& queue);
 
     Tokenizer*              tok;
 
@@ -36,7 +40,6 @@ protected:
     std::string             oneCharOper;
 
     int                     line;
-    int                     column;
 };
 
 #endif	/* _PARSER_H */

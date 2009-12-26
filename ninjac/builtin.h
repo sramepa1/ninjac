@@ -17,6 +17,11 @@ public:
     virtual double evaluate () const { return M_E; }
 };
 
+class BuiltInRand : public Expression {
+public:
+    virtual double evaluate () const { return (double)rand() / (double)RAND_MAX; }
+};
+
 class BuiltInNot : public Expression {
 public:
     virtual double evaluate () const { return (double)(Variable("firstarg").evaluate() <= Globals::inst->delta); }
