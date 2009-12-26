@@ -95,7 +95,7 @@ double DivOperator::evaluate() const {
     double numer = left->evaluate();
     double denom = right->evaluate();
     if(fabs(denom) <= Globals::inst->delta) {
-        throw NinjacException(true,"division by zero",l,c);
+        throw NinjacException(true,"division by zero",l);
     }    
 
     #ifdef DEBUG
@@ -115,7 +115,7 @@ double IntDivOperator::evaluate() const {
     long numer = (long)round(left->evaluate());
     long denom = (long)round(right->evaluate());
     if(denom == 0) {
-        throw NinjacException(true,"division by zero",l,c);
+        throw NinjacException(true,"division by zero",l);
     }
 
     #ifdef DEBUG
@@ -135,7 +135,7 @@ double ModuloOperator::evaluate() const {
     long numer = (long)round(left->evaluate());
     long denom = (long)round(right->evaluate());
     if(denom == 0) {
-        throw NinjacException(true,"division by zero",l,c);
+        throw NinjacException(true,"division by zero",l);
     }
 
     #ifdef DEBUG
@@ -163,7 +163,7 @@ double AndOperator::evaluate() const {
     #ifdef DEBUG
         cout << "### short-circuit AND: left operand is true -> returning right operand" << endl;
     #endif
-    return right->evaluate();
+    return fabs(right->evaluate()) <= Globals::inst->delta ? 0.0 : 1.0;
 }
 
 double OrOperator::evaluate() const {
@@ -184,7 +184,7 @@ double OrOperator::evaluate() const {
     #ifdef DEBUG
         cout << "### short-circuit OR: left operand is false -> returning right operand" << endl;
     #endif
-    return right->evaluate();
+    return fabs(right->evaluate()) <= Globals::inst->delta ? 0.0 : 1.0;
 }
 
 double EqualsOperator::evaluate() const {

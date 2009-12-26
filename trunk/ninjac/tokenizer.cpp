@@ -39,7 +39,7 @@ Tokenizer::~Tokenizer() {
     if(cache != NULL) delete cache;
 }
 
-Token* Tokenizer::getToken(istream& is, int& column, int& line) {
+Token* Tokenizer::getToken(istream& is, int& line) {
     if(cache != NULL) return cache;
     char c;
     Token* t = new Token;
@@ -57,18 +57,13 @@ Token* Tokenizer::getToken(istream& is, int& column, int& line) {
             #endif
             t->type = Token::END;
             t->l = line;
-            t->c = column;
             return t;
         }
-        switch(c) {
-            case '\n':  line++;
-                        column = 0;
-                        comment = false;
-                        break;
-            case '#':   column++;
-                        comment = true;
-                        break;
-            default:    column++;
+        if(c == '\n') {
+            line++;
+            comment = false;
+        }else if(c == '#') {
+            comment = true;
         }
     }while(isspace(c) || comment);
 
@@ -85,7 +80,6 @@ Token* Tokenizer::getToken(istream& is, int& column, int& line) {
         t->type = Token::ASSIGN;
         if(is.peek() == '=') {
             is.get();
-            column++;
         }
     }else if(isdigit(c) || (c=='-' && lastToken!=Token::NUM && lastToken!=Token::FUNC && lastToken!=Token::RIGHT_P && lastToken!=Token::VAR)) {
         t->type = Token::NUM;
@@ -97,7 +91,6 @@ Token* Tokenizer::getToken(istream& is, int& column, int& line) {
                 c = is.peek();
                 if(isdigit(c) || c == '.') {
                     is >> c;
-                    column++;
                     t->value.append(1,c);
                 }else break;
             }
@@ -106,13 +99,12 @@ Token* Tokenizer::getToken(istream& is, int& column, int& line) {
         t->type = Token::VAR;
         if(!isalpha(is.peek())) {
             delete t;
-            throw NinjacException(false,"expected variable name",line, column);
+            throw NinjacException(false,"expected variable name",line);
         }
         for(;;){
             c = is.peek();
             if(isalpha(c)) {
                 is >> c;
-                column++;
                 t->value.append(1,c);
             }else break;
         }
@@ -122,7 +114,6 @@ Token* Tokenizer::getToken(istream& is, int& column, int& line) {
             c = is.peek();
             if(isalpha(c)) {
                 is >> c;
-                column++;
                 t->value.append(1,c);
             }else break;
         }
@@ -135,26 +126,23 @@ Token* Tokenizer::getToken(istream& is, int& column, int& line) {
         tmp.append(1,(char)is.peek());
         if(parser->twoCharOper.count(tmp) != 0) {
             t->value.append(1,(char)is.get());
-            column++;
         }
     }else {
         delete t;
         char buf[24] = "unexpected character: X";
         buf[22] = c;
-        throw NinjacException(false,buf,line, column);
+        throw NinjacException(false,buf,line);
     }
 
     if(is.fail()) {
         delete t;
-        throw NinjacException(false,"unexpected end of stream",line, column);
+        throw NinjacException(false,"unexpected end of stream",line);
     }
 
     lastToken = t->type;
     cache = t;
 
     t->l = line;
-    t->c = column;
-
     t->argc = 0;
 
     return t;

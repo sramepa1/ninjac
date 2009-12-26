@@ -82,6 +82,11 @@ void Globals::initBuiltIn() {
     temp->retExpr = new BuiltInE();
     (*functions)["e"] = temp;
 
+    temp = new func;
+    temp->body = NULL;
+    temp->retExpr = new BuiltInRand();
+    (*functions)["rand"] = temp;
+
 
 
     temp = new func;

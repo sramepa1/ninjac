@@ -60,10 +60,6 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <incDir>
-            <pElem>C:/MinGW/include</pElem>
-            <pElem>C:/MinGW/include/c++/3.4.5</pElem>
-          </incDir>
           <commandLine>-Wall -pedantic</commandLine>
           <preprocessorList>
             <Elem>DEBUG</Elem>

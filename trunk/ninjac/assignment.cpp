@@ -14,7 +14,12 @@ void Assignment::execute() {
         assert(val);
     #endif
 
-    Globals::inst->assignVar(vName, val->evaluate());
+    double newVal = val->evaluate();
+    Globals::inst->assignVar(vName, newVal);
+
+    if(Globals::inst->ia()) {
+        cout << "#> Variable $" << vName << " is now " << newVal << endl;
+    }
 }
 
 void Assignment::setValue(Expression* value) {

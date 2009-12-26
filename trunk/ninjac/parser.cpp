@@ -44,6 +44,8 @@ Parser::Parser() {
 
     keywords.insert("print");
 
+    keywords.insert("set");
+
     oneCharOper = "+-*/\\%&|=<>";
 
     twoCharOper.insert("==");
@@ -59,12 +61,11 @@ Parser::~Parser() {
 }
 
 void Parser::reset() {
-    line = 1; column = 1;
+    line = 1;
     tok->reset();
 }
 
 void Parser::parse(istream& is) {
-
     #ifdef DEBUG
         cout << "### Commencing parsing" << endl;
     #endif
@@ -172,7 +173,6 @@ Expression* Parser::parseExpr(istream& is) {
     istringstream sin;
     do {
         Token* t = out.front();
-        out.pop();
         #ifdef DEBUG
             cout << "### parsing token: " << t->value << " (length " << t->value.length() << ") of type " << t->type << endl;
             assert(t->value.length());
@@ -193,10 +193,11 @@ Expression* Parser::parseExpr(istream& is) {
                                 stack.push(new Variable(t->value));
                                 break;
             case Token::OPER:
-                                Operator* op = getOperator(t->value,t->l,t->c);
+                                Operator* op = getOperator(t->value,t->l);
                                 if(stack.size() < 2) {
                                     delete op;
-                                    throw NinjacException(false,"not enough operands for operator",t->l,t->c);
+                                    clearExprs(stack,out);
+                                    throw NinjacException(false,"not enough operands for operator",t->l);
                                 }
                                 op->setRight(stack.top());
                                 stack.pop();
@@ -205,13 +206,14 @@ Expression* Parser::parseExpr(istream& is) {
                                 stack.push(op);
                                 break;
             case Token::FUNC:
-                                FunctionCall* fc = new FunctionCall(t->value,t->l,t->c);
+                                FunctionCall* fc = new FunctionCall(t->value,t->l);
                                 #ifdef DEBUG
                                     cout << "### Parsing function " << t->value << ", argc = " << t->argc << endl;
                                 #endif
                                 if(stack.size() < t->argc) {
                                     delete fc;
-                                    throw NinjacException(false,"missing argument(s)",t->l,t->c);
+                                    clearExprs(stack,out);
+                                    throw NinjacException(false,"missing argument(s)",t->l);
                                 }
                                 for (unsigned int i = 0; i < t->argc; i++) {
                                     tmpStack.push(stack.top());
@@ -224,16 +226,34 @@ Expression* Parser::parseExpr(istream& is) {
                                 stack.push(fc);
                                 break;
         }
+        out.pop();
     }while(!out.empty());
 
     #ifdef DEBUG
-    assert(!stack.empty());
+        assert(!stack.empty());
     #endif
+
     if(stack.size() > 1) {
-        throw NinjacException(false,"not an expression (near here)", line, column);
+        clearExprs(stack,out);
+        throw NinjacException(false,"not an expression", line);
     }
 
+    #ifdef DEBUG
+        cout << "### Expression parsed" << endl;
+    #endif
+
     return stack.top();
+}
+
+void Parser::clearExprs(stack<Expression*>& stack, queue<Token*>& queue) {
+    while(!stack.empty()) {
+        delete stack.top();
+        stack.pop();
+    }
+    while(!queue.empty()) {
+        delete queue.front();
+        queue.pop();
+    }
 }
 
 Statement* Parser::parseStmt(istream& is) {
@@ -243,92 +263,116 @@ Statement* Parser::parseStmt(istream& is) {
 void Parser::shuntingYard(istream& is, queue<Token*>& out) {
     std::stack<Token*> stack;
     std::stack<int> argCntStack;
-
     bool end = false;
 
-    do {
-        Token* t = tok->getToken(is,line,column); // TODO catch!
-        #ifdef DEBUG
-            cout << "### received token: " << t->value << " (length " << t->value.length() << ") of type " << t->type << endl;
-        #endif
+    try {
+        do {
+            Token* t = tok->getToken(is,line); // TODO catch!
+            #ifdef DEBUG
+                cout << "### received token: " << t->value << " (length " << t->value.length() << ") of type " << t->type << endl;
+            #endif
 
-        switch(t->type) {
-            case Token::NUM :   //fall-through
-            case Token::VAR :
-                                out.push(t);
-                                tok->tokenOK();
-                                break;
-            case Token::FUNC:   argCntStack.push(0); //fall-through;
-            case Token::LEFT_P:
-                                stack.push(t);
-                                tok->tokenOK();
-                                break;
-            case Token::RIGHT_P:
-                                while (!stack.empty() && stack.top()->type != Token::LEFT_P){
-                                    out.push(stack.top());
+            switch(t->type) {
+                case Token::NUM :   //fall-through
+                case Token::VAR :
+                                    out.push(t);
+                                    tok->tokenOK();
+                                    break;
+                case Token::FUNC:   argCntStack.push(0); //fall-through;
+                case Token::LEFT_P:
+                                    stack.push(t);
+                                    tok->tokenOK();
+                                    break;
+                case Token::RIGHT_P:
+                                    while (!stack.empty() && stack.top()->type != Token::LEFT_P){
+                                        out.push(stack.top());
+                                        stack.pop();
+                                    }
+                                    if(stack.empty()) {
+                                        int ln = t->l;
+                                        delete t;
+                                        throw NinjacException(false,"unmatched parthenses",ln);
+                                    }
+                                    #ifdef DEBUG
+                                        assert(stack.top()->type == Token::LEFT_P);
+                                    #endif
                                     stack.pop();
-                                }
-                                if(stack.empty()) {
-                                    throw NinjacException(false,"unmatched parthenses near this location",t->l,t->c);
-                                }
-                                #ifdef DEBUG
-                                    assert(stack.top()->type == Token::LEFT_P);
-                                #endif
-                                stack.pop();
-                                if(!stack.empty() && stack.top()->type == Token::FUNC) {
-                                    Token* f = stack.top();
-                                    f->argc = argCntStack.top() + 1;
+                                    if(!stack.empty() && stack.top()->type == Token::FUNC) {
+                                        Token* f = stack.top();
+                                        f->argc = argCntStack.top() + 1;
+                                        argCntStack.pop();
+                                        out.push(f);
+                                        stack.pop();
+                                    }
+                                    tok->tokenOK();
+                                    break;
+                case Token::OPER:
+                                    while(!stack.empty() && ( stack.top()->type == Token::FUNC || (stack.top()->type == Token::OPER && tok->hasLTEpriority(t,stack.top())))){
+                                        out.push(stack.top());
+                                        stack.pop();
+                                    }
+                                    stack.push(t);
+                                    tok->tokenOK();
+                                    break;
+                case Token::ARG_SEP:
+                                    while (!stack.empty() && stack.top()->type != Token::LEFT_P){
+                                        out.push(stack.top());
+                                        stack.pop();
+                                    }
+                                    if(stack.empty()) {
+                                        int ln = t->l;
+                                        delete t;
+                                        throw NinjacException(false,"misplaced argument separator or unmatched parthenses",ln);
+                                    }
+                                    int tmp = argCntStack.top()+1;
                                     argCntStack.pop();
-                                    out.push(f);
-                                    stack.pop();
-                                }
-                                tok->tokenOK();
-                                break;
-            case Token::OPER:
-                                while(!stack.empty() && ( stack.top()->type == Token::FUNC || (stack.top()->type == Token::OPER && tok->hasLTEpriority(t,stack.top())))){
-                                    out.push(stack.top());
-                                    stack.pop();
-                                }
-                                stack.push(t);
-                                tok->tokenOK();
-                                break;
-            case Token::ARG_SEP:
-                                while (!stack.empty() && stack.top()->type != Token::LEFT_P){
-                                    out.push(stack.top());
-                                    stack.pop();
-                                }
-                                if(stack.empty()) {
-                                    throw NinjacException(false,"misplaced argument separator or unmatched parthenses",t->l,t->c);
-                                }
-                                int tmp = argCntStack.top()+1;
-                                argCntStack.pop();
-                                argCntStack.push(tmp);
-                                tok->tokenOK();
-                                break;
-            default:
-                                end = true;
-                                break;
-        }
-    }while(!end);
+                                    argCntStack.push(tmp);
+                                    tok->tokenOK();
+                                    break;
+                default:
+                                    end = true;
+                                    break;
+            }
+        }while(!end);
+    }catch(NinjacException e) {
+        clearTokens(stack,out);
+        throw e;
+    }
 
     while(!stack.empty()) {
         if(stack.top()->type == Token::LEFT_P) {
-            throw NinjacException(false,"unmatched parthenses near this location",stack.top()->l,stack.top()->c);
+            int ln = stack.top()->l;
+            clearTokens(stack,out);
+            throw NinjacException(false,"unmatched parthenses",ln);
         }
         out.push(stack.top());
         stack.pop();
     }
 
-    if(out.empty()) throw NinjacException(false,"expected an expression",line,column);
+    if(out.empty()) {
+        clearTokens(stack,out);
+        throw NinjacException(false,"expected an expression",line);
+    }
 }
 
-Operator* Parser::getOperator(string oper, int l, int c) {
+void Parser::clearTokens(stack<Token*>& stack, queue<Token*>& queue) {
+    while(!stack.empty()) {
+        delete stack.top();
+        stack.pop();
+    }
+    while(!queue.empty()) {
+        delete queue.front();
+        queue.pop();
+    }
+}
+
+Operator* Parser::getOperator(string oper, int line) {
     if(oper == "+") return new PlusOperator();
     if(oper == "-") return new MinusOperator();
-    if(oper == "/") return new DivOperator(l,c);
+    if(oper == "/") return new DivOperator(line);
     if(oper == "*") return new MulOperator();
-    if(oper == "\\") return new IntDivOperator(l,c);
-    if(oper == "%") return new ModuloOperator(l,c);
+    if(oper == "\\") return new IntDivOperator(line);
+    if(oper == "%") return new ModuloOperator(line);
     if(oper == "<") return new LessOperator();
     if(oper == ">") return new GreaterOperator();
     if(oper == ">=") return new GTEOperator();

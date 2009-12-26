@@ -40,7 +40,7 @@ void FunctionDeclaration::execute() {
         cout << "#> Function " << name << " of " << function->args.size() << " arguments successfully declared." << endl;
     }
     
-    function = NULL;
+    function = NULL; // FunctionDeclaration only executes once - ownership of function is transferred to the map in Globals
 }
 
 void FunctionDeclaration::addArgument(std::string arg) {
@@ -77,7 +77,7 @@ double FunctionCall::evaluate() const {
     #endif
 
     if(Globals::inst->getFuncs()->find(name) == Globals::inst->getFuncs()->end()) {
-        throw NinjacException(true,(string("unknown function: ")+name).c_str(),line,column);
+        throw NinjacException(true,(string("unknown function: ")+name).c_str(),line);
     }
 
     func* fn = (*Globals::inst->getFuncs())[name];
@@ -85,7 +85,7 @@ double FunctionCall::evaluate() const {
     if(expArgs != values.size()) {
         ostringstream os;
         os << "argument count mismatch - expected " << expArgs << ", found " << values.size();
-        throw NinjacException(true,os.str().c_str(),line,column);
+        throw NinjacException(true,os.str().c_str(),line);
     }
 
     #ifdef DEBUG
@@ -129,7 +129,7 @@ double FunctionCall::evaluate() const {
     delete argmap;
 
     if(isnan(result) || isinf(result) || isinf(-result)) {
-        throw NinjacException(true,"argument(s) were outside function's domain",line,column);
+        throw NinjacException(true,"argument(s) outside function's domain",line);
     }
 
     return result;
