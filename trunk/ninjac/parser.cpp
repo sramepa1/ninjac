@@ -87,6 +87,7 @@ void Parser::parse(istream& is) {
         if(t->type != Token::STMT_SEP) {
             throw NinjacException(false,"expected ';'",t->l);
         }
+        delete t;
         tok->tokenOK();
         topLevel = true;
     }
@@ -111,9 +112,9 @@ Statement* Parser::parseStmt(istream& is) {
         case Token::LEFT_P:
         case Token::NUM:
         case Token::VAR:
-                            ExpressionStatement* es = new ExpressionStatement();
+                            {ExpressionStatement* es = new ExpressionStatement();
                             es->setExpr(parseExpr(is));
-                            return es;
+                            return es;}
         default:
                             throw NinjacException(false,"expected statement",t->l);
     };
@@ -518,7 +519,7 @@ Expression* Parser::parseExpr(istream& is) {
                                 stack.push(new Variable(t->value));
                                 break;
             case Token::OPER:
-                                Operator* op = getOperator(t->value,t->l);
+                                {Operator* op = getOperator(t->value,t->l);
                                 if(stack.size() < 2) {
                                     delete op;
                                     clearExprs(stack,out);
@@ -529,7 +530,7 @@ Expression* Parser::parseExpr(istream& is) {
                                 op->setLeft(stack.top());
                                 stack.pop();
                                 stack.push(op);
-                                break;
+                                break;}
             case Token::FUNC:
                                 FunctionCall* fc = new FunctionCall(t->value,t->l);
                                 #ifdef DEBUG
@@ -611,9 +612,7 @@ void Parser::shuntingYard(istream& is, queue<Token*>& out) {
                                         stack.pop();
                                     }
                                     if(stack.empty()) {
-                                        int ln = t->l;
-                                        delete t;
-                                        throw NinjacException(false,"unmatched parthenses",ln);
+                                        throw NinjacException(false,"unmatched parthenses",t->l);
                                     }
                                     #ifdef DEBUG
                                         assert(stack.top()->type == Token::LEFT_P);
@@ -639,21 +638,19 @@ void Parser::shuntingYard(istream& is, queue<Token*>& out) {
                                     tok->tokenOK();
                                     break;
                 case Token::ARG_SEP:
-                                    while (!stack.empty() && stack.top()->type != Token::LEFT_P){
+                                    {while (!stack.empty() && stack.top()->type != Token::LEFT_P){
                                         out.push(stack.top());
                                         stack.pop();
                                     }
                                     if(stack.empty()) {
-                                        int ln = t->l;
-                                        delete t;
-                                        throw NinjacException(false,"misplaced argument separator or unmatched parthenses",ln);
+                                        throw NinjacException(false,"misplaced argument separator or unmatched parthenses",t->l);
                                     }
                                     int tmp = argCntStack.top()+1;
                                     argCntStack.pop();
                                     argCntStack.push(tmp);
                                     delete t;
                                     tok->tokenOK();
-                                    break;
+                                    break;}
                 default:
                                     end = true;
                                     break;
