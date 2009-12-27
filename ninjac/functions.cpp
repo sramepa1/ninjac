@@ -143,7 +143,7 @@ double FunctionCall::evaluate() const {
     Globals::inst->getLocalVars()->pop();
     delete argmap;
 
-    if(isnan(result) || isinf(result) || isinf(-result)) {
+    if(isnan(result) || isnan(result + (-result))) { // NaN or infinity
         throw NinjacException(true,"argument(s) outside function's domain",line);
     }
 

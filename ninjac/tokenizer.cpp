@@ -53,6 +53,7 @@ Token* Tokenizer::getToken(istream& is, int& line) {
             #endif
             t->type = Token::END;
             t->l = line;
+            cache = t;
             return t;
         }
         if(c == '\n') {
@@ -113,7 +114,7 @@ Token* Tokenizer::getToken(istream& is, int& line) {
                 t->value.append(1,c);
             }else break;
         }
-        t->type = parser->keywords.count(t->value) == 0 ? Token::FUNC : Token::KEYWORD;
+        t->type = parser->keywords.count(t->value) == 0 ? (int)Token::FUNC : (int)Token::KEYWORD;
     }else if(parser->oneCharOper.find(c) != string::npos) {
         t->type = Token::OPER;
         t->value.append(1,c);
