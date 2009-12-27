@@ -50,7 +50,9 @@ void PrecisionStatement::execute() {
         assert(expression);
     #endif
 
-    int result = (int)round(fabs(expression->evaluate()));
+    double tmp = round(fabs(expression->evaluate()));
+    int result = tmp > 16.0 ? 16 : (int)tmp;
+
     if(Globals::inst->ia()) {
         cout << "#> " << "Precision set to " << result << " digits." << endl;
     }
