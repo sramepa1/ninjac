@@ -112,8 +112,11 @@ double IntDivOperator::evaluate() const {
         assert(right);
     #endif
 
-    long numer = (long)round(left->evaluate());
-    long denom = (long)round(right->evaluate());
+    double numer = round(left->evaluate());
+    double denom = round(right->evaluate());
+    if( fabs(numer) > (double)LONG_MAX || fabs(denom) > (double)LONG_MAX ) {
+        throw NinjacException(true,"operand too large for integer division",l);
+    }
     if(denom == 0) {
         throw NinjacException(true,"division by zero",l);
     }
@@ -122,7 +125,7 @@ double IntDivOperator::evaluate() const {
         cout << "### dividing " << numer << " \\ " << denom << endl;
     #endif
 
-    return (double)(numer/denom);
+    return (double)((long)numer/(long)denom);
 }
 
 double ModuloOperator::evaluate() const {
@@ -132,8 +135,11 @@ double ModuloOperator::evaluate() const {
         assert(right);
     #endif
 
-    long numer = (long)round(left->evaluate());
-    long denom = (long)round(right->evaluate());
+    double numer = round(left->evaluate());
+    double denom = round(right->evaluate());
+    if( fabs(numer) > (double)LONG_MAX || fabs(denom) > (double)LONG_MAX ) {
+        throw NinjacException(true,"operand too large for modulo calculation",l);
+    }
     if(denom == 0) {
         throw NinjacException(true,"division by zero",l);
     }
@@ -142,7 +148,7 @@ double ModuloOperator::evaluate() const {
         cout << "### calculating " << numer << " % " << denom << endl;
     #endif
 
-    return (double)(numer % denom);
+    return (double)((long)numer % (long)denom);
 }
 
 double AndOperator::evaluate() const {
