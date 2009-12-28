@@ -1,3 +1,26 @@
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
+#ifdef DEBUG
+    #include <cassert>
+#endif
+
 #include <string>
 #include <cstring>
 
@@ -6,11 +29,15 @@
 
 using namespace std;
 
+/*
+ * Yet another boring initialization
+ */
 Tokenizer::Tokenizer(Parser* p) {
     parser = p;
     cache = NULL;
     lastToken = Token::END;
 
+    // priorities taken from C
     prior["*"] = 6;
     prior["/"] = 6;
     prior["\\"] = 6;
@@ -35,16 +62,41 @@ Tokenizer::Tokenizer(Parser* p) {
     prior["||"] = 1;
 }
 
+/*
+ * Deletes the last leftover token if necessary. More info on cache coming soon.
+ */
 Tokenizer::~Tokenizer() {
     if(cache != NULL) delete cache;
 }
 
+/*
+ * Returns the next token in the stream.
+ *
+ * Mechanism works this way:
+ *  - if cache is NULL, the token is created, actually read from the character stream,
+ *    stored in the cache and then returned
+ *  - if there already is a token in the cache, it is returned and nothing is done
+ *    to the stream.
+ *
+ *  - if the returned token was what the calling parser function was expecting,
+ *    ownership is transferred (parser stores and/or deletes the token)
+ *    and parser acknowledges this by calling tokenOK, which sets cache to NULL.
+ *
+ *  - if this was not expected (for example a keyword that followed expression tokens),
+ *    the parser just leaves the token in cache and finishes its job.
+ *    The next parsing function to call getToken will then receive another pointer
+ *    to the same Token.
+ *
+ * This ensures that parsing functions can "taste" what's in the stream without a penalty,
+ * as long as a taste of one Token is enough (in NINJAC's language, it is)
+ */
 Token* Tokenizer::getToken(istream& is, int& line) {
     if(cache != NULL) return cache;
     char c;
     Token* t = new Token;
     bool comment = false;
 
+    // skip whitespace and comments
     do {
         is >> c; // formatted input for the purpose of linebreak conversion
         if(!is.good()) {
@@ -64,7 +116,7 @@ Token* Tokenizer::getToken(istream& is, int& line) {
         }
     }while(isspace(c) || comment);
 
-
+    // identify token
     if(c=='(') {
         t->type = Token::LEFT_P;
     }else if(c==')') {
@@ -79,16 +131,23 @@ Token* Tokenizer::getToken(istream& is, int& line) {
             is.get();
         }
     }else if(isdigit(c) || (c=='-' && lastToken!=Token::NUM && lastToken!=Token::FUNC && lastToken!=Token::RIGHT_P && lastToken!=Token::VAR)) {
+        /* That if-monstrosity is because "-" followed by a digit is the only ambiguous thing in the NINJAC language.
+         * It may be the beginning of a constant *OR* an operator followed by a constant.
+         * And since this is a single-pass parser, I can't guess and then go back in the stream
+         * (it won't be even possible with cin).
+         * So I keep track of what was the last token to determine whether it could
+         * be folloewd by a negative constant or not.
+         */
         t->type = Token::NUM;
         t->value.append(1,c);
         if( c=='-' && !isdigit(is.peek())) {
-            t->type = Token::OPER;
+            t->type = Token::OPER; //negative constant could have been here, but it actually was an operator
         }else {
             for(;;){
                 c = is.peek();
                 if(isdigit(c) || c == '.') {
                     is >> c;
-                    t->value.append(1,c);
+                    t->value.append(1,c); // store the string char-by-char
                 }else break;
             }
         }
@@ -120,7 +179,7 @@ Token* Tokenizer::getToken(istream& is, int& line) {
         t->value.append(1,c);
         string tmp;
         tmp.append(1,c);
-        tmp.append(1,(char)is.peek());
+        tmp.append(1,(char)is.peek()); // try to construct two chars
         if(parser->twoCharOper.count(tmp) != 0) {
             t->value.append(1,(char)is.get());
         }
@@ -145,10 +204,17 @@ Token* Tokenizer::getToken(istream& is, int& line) {
     return t;
 }
 
+/*
+ * As described above, the parser acknowledges Token reception and ownership transfer
+ * by calling this.
+ */
 void Tokenizer::tokenOK() {
     cache = NULL;
 }
 
+/*
+ * resets tokenizer state
+ */
 void Tokenizer::reset() {
     if(cache != NULL) {
         delete cache;
@@ -157,6 +223,11 @@ void Tokenizer::reset() {
     lastToken = Token::END;
 }
 
+/*
+ * Called by the Shunting-yard function to determine operator precedence,
+ * this uses a lookup table to determine whether the first operator token
+ * has lower than or equal precedence than the second operator token
+ */
 bool Tokenizer::hasLTEpriority(Token* first, Token* second) {
     #ifdef DEBUG
         assert(first->type == Token::OPER && second->type == Token::OPER);

@@ -1,3 +1,22 @@
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
 #ifndef _OPERATOR_H
 #define	_OPERATOR_H
 
@@ -5,6 +24,9 @@
 
 #include "expression.h"
 
+/*
+ * Abstract ancestor of all the binary operators in my language
+ */
 class Operator : public Expression {
 
 public:
@@ -21,6 +43,10 @@ protected:
 
 
 
+/*
+ * Various subclasses - name says it all
+ */
+
 class PlusOperator : public Operator {
 public:
     virtual double        evaluate      () const;
@@ -36,6 +62,11 @@ public:
     virtual double        evaluate      () const;
 };
 
+
+/*
+ * Division-like operators need to know their line in script source
+ * to correctly report runtime exceptions (division by zero)
+ */
 class DivOperator : public Operator {
 public:
                           DivOperator   (int line) : l(line) { }

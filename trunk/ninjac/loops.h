@@ -1,3 +1,22 @@
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
 #ifndef _LOOP_H
 #define	_LOOP_H
 
@@ -5,6 +24,9 @@
 #include "variable.h"
 
 
+/*
+ * Abstract ancestor of all loop statements
+ */
 class Loop : public Statement {
 
 public:
@@ -20,6 +42,9 @@ protected:
 
 
 
+/*
+ * Represents the for-loop
+ */
 class ForLoop : public Loop {
 
 public:
@@ -45,7 +70,9 @@ private:
 };
 
 
-
+/*
+ * Abstract aggregate of the very similar conditional loops
+ */
 class CondLoop : public Loop {
 
 public:
@@ -58,7 +85,9 @@ protected:
 };
 
 
-
+/*
+ * Represents the 'repeat' conditional loop
+ */
 class RepeatLoop : public CondLoop {
 
 public:
@@ -71,7 +100,9 @@ private:
 };
 
 
-
+/*
+ * Represents the 'while' conditional loop
+ */
 class WhileLoop : public CondLoop {
 
 public:

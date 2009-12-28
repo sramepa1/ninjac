@@ -1,3 +1,22 @@
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
 #ifdef DEBUG    
     #include <assert.h>    
 #endif
@@ -16,6 +35,12 @@ ForLoop::~ForLoop() {
     if(stepExpr != NULL) delete stepExpr;
 }
 
+/*
+ * executes a for-loop. Algorithm is:
+ * - evaluate bounds and step
+ * - determine direction
+ * - repeat execution and control var assignment until second bound is stepped over
+ */
 void ForLoop::execute() {
     #ifdef DEBUG
         cout << "### entering for loop, evaluating expressions" << endl;
@@ -26,7 +51,7 @@ void ForLoop::execute() {
 
     double from = fromExpr->evaluate();
     double to = toExpr->evaluate();
-    double step = fabs(stepExpr->evaluate());
+    double step = fabs(stepExpr->evaluate()); // strips sign
     bool up = to >= from;
 
     #ifdef DEBUG
@@ -62,7 +87,9 @@ void ForLoop::execute() {
 }
 
 
-
+/*
+ * repeats body execution until condition is true
+ */
 void RepeatLoop::execute() {
     #ifdef DEBUG
         cout << "### entering repeat loop" << endl;
@@ -87,7 +114,9 @@ void RepeatLoop::execute() {
 }
 
 
-
+/*
+ * while condition is true, repeats body execution
+ */
 void WhileLoop::execute() {
     #ifdef DEBUG
         cout << "### entering while loop" << endl;
