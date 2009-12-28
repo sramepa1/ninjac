@@ -1,3 +1,22 @@
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
 #ifndef _FUNCDECL_H
 #define	_FUNCDECL_H
 
@@ -7,9 +26,11 @@
 #include "statement.h"
 #include "expression.h"
 
-
+/*
+ * A simple struct to be put to the function table
+ */
 struct func {
-    ~func();
+                               ~func();
 
     std::vector<std::string>    args;
     Statement*                  body;
@@ -17,7 +38,9 @@ struct func {
 };
 
 
-
+/*
+ * Represents the function declaration statement
+ */
 class FunctionDeclaration : public Statement {
 
 public:
@@ -43,6 +66,10 @@ private:
 
 
 
+
+/*
+ * Represents the function call, which is an expression
+ */
 class FunctionCall : public Expression {
 public:
                     FunctionCall        (std::string funcName, int lin) : name(funcName), line(lin) { }
@@ -65,4 +92,3 @@ private:
 
 
 #endif	/* _FUNCDECL_H */
-

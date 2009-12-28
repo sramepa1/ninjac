@@ -1,10 +1,30 @@
-#include <cmath>
-
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
 #ifdef DEBUG
     #include <iostream>
     #include <cassert>
     using namespace std;
 #endif
+
+#include <limits.h>
+#include <cmath>
 
 #include "operators.h"
 #include "globals.h"
@@ -14,6 +34,24 @@ Operator::~Operator() {
     if(left != NULL) delete left;
     if(right != NULL) delete right;
 }
+
+
+
+/*
+ *  DELAYED INITIALIZATION
+ *  this pattern is present across the core, but I will only explain here:
+ *
+ *  - the obvious:  yes, it could have been a part of the constructors
+ *
+ *  - the reasons:  when writing the core, I had no idea how the parser will look like
+ *                  and whether it will be possible to use one-step initialization
+ *                  especially in regard to what may be thrown somewhere deep down
+ *                  when parsing the tree.
+ * 
+ *  - the solution: it works just fine - it's me who's doing the initialization,
+ *                  so I can make sure it's done right
+ */
+
 
 void Operator::setLeft(Expression* l) {
     #ifdef DEBUG

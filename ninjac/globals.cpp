@@ -1,4 +1,24 @@
+/*
+ *      NINJAC - an interative, programmable calculator
+ *
+ *      semestral project for C/C++ programming course
+ *      (Y36PJC) at the FEE CTU Prague
+ *
+ *      Created by Pavel Sramek (sramepa1@fel.cvut.cz)
+ *      December 2009
+ *
+ *      This is free software, licensed under GNU LGPL
+ *      (GNU Lesser General Public License, version 3)
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ *      Project homepage:
+ *      http://code.google.com/p/ninjac/
+ *
+ *      Version 1.0
+ *
+ */
 #ifdef DEBUG
+    #include <cassert>
     #include <iostream>
 #endif
 
@@ -11,18 +31,24 @@
 
 using namespace std;
 
+/*
+ * initializes the support fields
+ */
 Globals::Globals() {
-    interactive = true;
+    interactive = true; // will be overwritten by main(), but I'd rather not leave it uninitialized
     parser = new Parser();
-    program = new Block(false); // silent
+    program = new Block(false); // false = silent in interactive mode, although it technically *is* a top level statement
     delta = 1e-12;
     globalVars = new map<string,double>();
     localVarStack = new stack<map<string,double>*>();
     functions = new map<string,func*>();
 
-    initBuiltIn();
+    initBuiltIn(); // fill function map with built-ins
 }
 
+/*
+ * Does not really need a comment...
+ */
 Globals::~Globals() {
     delete parser;
     delete program;
@@ -38,9 +64,13 @@ Globals::~Globals() {
     delete functions;
 }
 
+/*
+ * Purges the program block and any remaining local variables
+ * and resets parser state - called between lines in interactive mode
+ */
 void Globals::resetProg() {
     #ifdef DEBUG
-        cout << "### -- resetting program block --" << endl;
+        cout << "### resetting program block" << endl;
     #endif
 
     delete program;
@@ -54,6 +84,14 @@ void Globals::resetProg() {
     parser->reset();
 }
 
+/*
+ * Function name says it all. The algorithm for assignment is:
+ *
+ * no function context -> global
+ * in function and this local var already exists -> local
+ * in function and this var only exists in global -> global
+ * in function and var does not exist at all -> new local
+ */
 void Globals::assignVar(string varName, double value) {
 
     if(getLocalVars()->empty() || (getVars()->count(varName) == 1 && getLocalVars()->top()->count(varName) == 0) ) {
@@ -77,6 +115,10 @@ void Globals::assignVar(string varName, double value) {
     #endif
 }
 
+/*
+ * Boring but necessary - pre-fills the function map with the built-in functions
+ * from builtins.h
+ */
 void Globals::initBuiltIn() {
     func* temp;
 
@@ -95,8 +137,8 @@ void Globals::initBuiltIn() {
     temp->retExpr = new BuiltInRand();
     (*functions)["rand"] = temp;
 
-    srand(time(NULL));
-    rand();rand();rand();
+    srand(time(NULL));          // seed and randomize the cstdlib generator
+    rand(); rand(); rand();
 
 
 
@@ -208,4 +250,4 @@ void Globals::initBuiltIn() {
     (*functions)["min"] = temp;
 }
 
-Globals* const Globals::inst = new Globals();
+Globals* const Globals::inst = new Globals(); // and don't forget actually instantiating the singleton
