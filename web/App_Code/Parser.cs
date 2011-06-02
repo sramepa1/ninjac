@@ -78,7 +78,7 @@ public class Parser
 
     public void parse(TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
 
         if (t.type == TokenType.END)
         {
@@ -89,7 +89,7 @@ public class Parser
         for (; ; )
         { // parse top-level statements, separated by separators
             n.program.append(parseStmt(reader));
-            t = tok.getToken(reader, line);
+            t = tok.getToken(reader, ref line);
             if (t.type == TokenType.END) break;
             if (t.type != TokenType.STMT_SEP)
             {
@@ -102,7 +102,7 @@ public class Parser
 
     public Statement parseStmt(TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
 
         switch (t.type)
         {
@@ -194,7 +194,7 @@ public class Parser
 
         do
         {
-            Token t = tok.getToken(reader, line);
+            Token t = tok.getToken(reader, ref line);
 
             switch (t.type)
             {
@@ -280,7 +280,7 @@ public class Parser
 
     protected Statement parseKeyword(TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
 
         if (t.value == "set")
         {
@@ -357,7 +357,7 @@ public class Parser
 
     protected void expect(string keyword, TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type != TokenType.KEYWORD || t.value != keyword)
         {
             throw new NinjacException(false, String.Format("expected \"{0}\"", keyword), t.line);
@@ -367,7 +367,7 @@ public class Parser
 
     protected string parseVar(TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type != TokenType.VAR)
         {
             throw new NinjacException(false, "expected a variable", t.line);
@@ -385,7 +385,7 @@ public class Parser
         c.cond = parseExpr(reader);
         expect("then", reader);
         c.ifTrue = parseStmt(reader);
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type == TokenType.KEYWORD && t.value == "else")
         {
             tok.tokenOK();
@@ -398,7 +398,7 @@ public class Parser
 
     protected Statement parseFunc(TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type != TokenType.FUNC)
         {
             throw new NinjacException(false, "expected function name", t.line);
@@ -412,7 +412,7 @@ public class Parser
         fd.setBody(b);
         tok.tokenOK();
 
-        t = tok.getToken(reader, line);
+        t = tok.getToken(reader, ref line);
         if (t.type != TokenType.KEYWORD || (t.value != "of" && t.value != "is"))
         {
             throw new NinjacException(false, "expected \"of\" or \"is\"", t.line);
@@ -430,7 +430,7 @@ public class Parser
                     throw new NinjacException(false, "argument name duplication", line);
                 }
                 fd.addArgument(arg);
-                t = tok.getToken(reader, line);
+                t = tok.getToken(reader, ref line);
                 if (t.type == TokenType.KEYWORD && t.value == "is")
                 {
                     tok.tokenOK();
@@ -446,13 +446,13 @@ public class Parser
             }
         }
         // in either case, 'is' token was already acknowledged
-        t = tok.getToken(reader, line);
+        t = tok.getToken(reader, ref line);
         if (t.type != TokenType.KEYWORD || t.value != "return")
         {
             for (; ; )
             {
                 b.append(parseStmt(reader));
-                t = tok.getToken(reader, line);
+                t = tok.getToken(reader, ref line);
                 if (t.type == TokenType.KEYWORD && t.value == "return") break;
                 if (t.type != TokenType.STMT_SEP)
                 {
@@ -480,7 +480,7 @@ public class Parser
         for (; ; )
         {
             b.append(parseStmt(reader));
-            t = tok.getToken(reader, line);
+            t = tok.getToken(reader, ref line);
             if (t.type == TokenType.KEYWORD && t.value == "until") break;
             if (t.type != TokenType.STMT_SEP)
             {
@@ -515,7 +515,7 @@ public class Parser
         f.fromExpr = parseExpr(reader);
         expect("to", reader);
         f.toExpr = parseExpr(reader);
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type != TokenType.KEYWORD || (t.value != "do" && t.value != "step"))
         {
             throw new NinjacException(false, "expected \"do\" or \"step\"", t.line);
@@ -538,7 +538,7 @@ public class Parser
 
     protected Statement parseBlock(TextReader reader)
     {
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type == TokenType.KEYWORD && t.value == "end")
         {
             tok.tokenOK();
@@ -550,7 +550,7 @@ public class Parser
         {
 
             b.append(parseStmt(reader));
-            t = tok.getToken(reader, line);
+            t = tok.getToken(reader, ref line);
 
             if (t.type == TokenType.KEYWORD && t.value == "end") break;
             if (t.type != TokenType.STMT_SEP)
@@ -568,7 +568,7 @@ public class Parser
     {
         Assignment ass = new Assignment(parseVar(reader), topLevel, n);
 
-        Token t = tok.getToken(reader, line);
+        Token t = tok.getToken(reader, ref line);
         if (t.type != TokenType.ASSIGN)
         {
             throw new NinjacException(false, "expected assignment operator", t.line);

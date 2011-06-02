@@ -74,7 +74,7 @@ public class Tokenizer
     }
 
 
-    public Token getToken(TextReader reader, int line)
+    public Token getToken(TextReader reader, ref int line)
     {
         if (cache != null)
         {

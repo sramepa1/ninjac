@@ -122,7 +122,6 @@ public class Ninjac
         writer.WriteLine(String.Concat("#! ", line, "<br />"));
     }
 
-
     protected void initBuiltIn()
     {
         functions["pi"] = new Func { args = new List<string>(), body = null, retExpr = new BuiltInPi() };
