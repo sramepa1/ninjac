@@ -36,6 +36,14 @@ html,body
     overflow: auto;
 }
 
+#scriptConsole
+{
+    width:90%;
+    margin:auto;
+    height: 200px;
+    overflow: auto;
+}
+
 #commandLine
 {
     width: 80%;

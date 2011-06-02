@@ -7,9 +7,7 @@
         </Services>
     </asp:ScriptManager>
 
-    <div id="console">
-    
-    </div>
+    <div id="console" class="console"></div>
 
     <script type="text/javascript">
         var disabled;
@@ -18,12 +16,18 @@
             disabled = true;
             document.getElementById("command_enter").disabled = true;
             document.getElementById("command_reset").disabled = true;
+
+            document.getElementById("command_enter").className = "disabled";
+            document.getElementById("command_reset").className = "disabled";
         }
 
         function enable() {
             disabled = false;
             document.getElementById("command_enter").disabled = false;
             document.getElementById("command_reset").disabled = false;
+
+            document.getElementById("command_enter").className = "command_button";
+            document.getElementById("command_reset").className = "command_button";
         }
 
         //reset

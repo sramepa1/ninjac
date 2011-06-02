@@ -7,7 +7,7 @@
         </Services>
     </asp:ScriptManager>
 
-    <div id="console" style="height:50px"></div>
+    <div id="scriptConsole" class="console"></div>
 
     <script type="text/javascript">
         var disabled;
@@ -16,12 +16,18 @@
             disabled = true;
             document.getElementById("command_enter").disabled = true;
             document.getElementById("command_clean").disabled = true;
+
+            document.getElementById("command_enter").className = "disabled";
+            document.getElementById("command_clean").className = "disabled";
         }
 
         function enable() {
             disabled = false;
             document.getElementById("command_enter").disabled = false;
             document.getElementById("command_clean").disabled = false;
+
+            document.getElementById("command_enter").className = "command_button";
+            document.getElementById("command_clean").className = "command_button";
         }
 
         //clean
@@ -32,9 +38,22 @@
 
         //load results
         function successResut(result) {
-            var console = document.getElementById('console');
-            console.innerHTML = result;
-            $("#console").scrollTop($("#console")[0].scrollHeight);
+            var console = document.getElementById('scriptConsole');
+            console.innerHTML = "";
+
+            var tag = document.createElement("span");
+            tag.className = "bot";
+
+            if (result.match('#!')) {
+                tag.className = "bot error";
+            } else {
+                tag.className = "bot";
+            }
+
+            tag.innerHTML = result;
+            console.appendChild(tag);
+
+            $("#scriptConsole").scrollTop($("#scriptConsole")[0].scrollHeight);
             enable();
         }
 
