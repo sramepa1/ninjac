@@ -8,13 +8,20 @@ public abstract class Loop : Statement
     protected Ninjac n;
     protected bool topLevel;
 
+    protected uint cnt;
+
+    protected int lin;
     public Statement stmt { get; set; }
 
-    public Loop(bool top, Ninjac ninjac)
+    public static readonly uint LOOP_MAX = uint.MaxValue / 1024;
+
+    public Loop(bool top, Ninjac ninjac, int line)
     {
         topLevel = top;
         n = ninjac;
         stmt = null;
+        line = lin;
+        cnt = 0;
     }
 
     public abstract void execute();
@@ -29,8 +36,8 @@ public class ForLoop : Loop
     public Expression toExpr { get; set; }
     public Expression stepExpr { get; set; }
 
-    public ForLoop(string varName, bool top, Ninjac n)
-        : base(top, n)
+    public ForLoop(string varName, bool top, Ninjac n, int line)
+        : base(top, n, line)
     {
         vName = varName;
     }
@@ -50,7 +57,14 @@ public class ForLoop : Loop
             n.assignVar(vName, varValue);
             stmt.execute();
             varValue = up ? varValue + step : varValue - step;
+
+            if (++cnt == LOOP_MAX)
+            {
+                throw new NinjacException(true, "infinite loop", lin);
+            }
         }
+
+        cnt = 0;
 
         if ((varValue == from))
         {
@@ -69,8 +83,8 @@ public abstract class CondLoop : Loop
 {
     public Expression cond { get; set; }
 
-    public CondLoop(bool top, Ninjac n)
-        : base(top, n)
+    public CondLoop(bool top, Ninjac n, int line)
+        : base(top, n, line)
     {
         cond = null;
     }
@@ -81,8 +95,8 @@ public abstract class CondLoop : Loop
 
 public class RepeatLoop : CondLoop
 {
-    public RepeatLoop(bool top, Ninjac n)
-        : base(top, n)
+    public RepeatLoop(bool top, Ninjac n, int line)
+        : base(top, n, line)
     { }
 
     public override void execute()
@@ -90,7 +104,15 @@ public class RepeatLoop : CondLoop
         do
         {
             stmt.execute();
+
+            if (++cnt == LOOP_MAX)
+            {
+                throw new NinjacException(true, "infinite loop", lin);
+            }
+        
         } while (Math.Abs(cond.evaluate()) <= Ninjac.DELTA);
+
+        cnt = 0;
 
         if (n.ia() && topLevel)
         {
@@ -102,8 +124,8 @@ public class RepeatLoop : CondLoop
 
 public class WhileLoop : CondLoop
 {
-    public WhileLoop(bool top, Ninjac n)
-        : base(top, n)
+    public WhileLoop(bool top, Ninjac n, int line)
+        : base(top, n, line)
     { }
 
     public override void execute()
@@ -111,7 +133,14 @@ public class WhileLoop : CondLoop
         while (Math.Abs(cond.evaluate()) > Ninjac.DELTA)
         {
             stmt.execute();
+
+            if (++cnt == LOOP_MAX)
+            {
+                throw new NinjacException(true, "infinite loop", lin);
+            }
         }
+
+        cnt = 0;
 
         if (n.ia() && topLevel)
         {

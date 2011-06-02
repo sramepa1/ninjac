@@ -470,7 +470,7 @@ public class Parser
 
     protected Statement parseRepeat(TextReader reader)
     {
-        RepeatLoop r = new RepeatLoop(topLevel, n);
+        RepeatLoop r = new RepeatLoop(topLevel, n, line);
         Block b = new Block(false, n);
         r.stmt = b;
         topLevel = false; // may contain other statements - they surely aren't top-level ones
@@ -497,7 +497,7 @@ public class Parser
 
     protected Statement parseWhile(TextReader reader)
     {
-        WhileLoop w = new WhileLoop(topLevel, n);
+        WhileLoop w = new WhileLoop(topLevel, n, line);
         topLevel = false; // contained statement surely isn't a top-level one
         w.cond = parseExpr(reader);
         expect("do", reader);
@@ -507,7 +507,7 @@ public class Parser
 
     protected Statement parseFor(TextReader reader)
     {
-        ForLoop f = new ForLoop(parseVar(reader), topLevel, n);
+        ForLoop f = new ForLoop(parseVar(reader), topLevel, n, line);
         topLevel = false; // contained statement surely isn't a top-level one
 
         expect("from", reader);
