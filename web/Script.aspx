@@ -10,25 +10,41 @@
     <div id="console" style="height:50px"></div>
 
     <script type="text/javascript">
-        //reset
+        var disabled;
+
+        function disable() {
+            disabled = true;
+            document.getElementById("command_enter").disabled = true;
+            document.getElementById("command_clean").disabled = true;
+        }
+
+        function enable() {
+            disabled = false;
+            document.getElementById("command_enter").disabled = false;
+            document.getElementById("command_clean").disabled = false;
+        }
+
+        //clean
         function clean() {
             var scriptarea = document.getElementById('scriptarea');
             scriptarea.value = "";
         }
 
-
         //load results
         function successResut(result) {
             var console = document.getElementById('console');
             console.innerHTML = result;
-            console.scrollTop($("#console")[0].scrollHeight);
+            $("#console").scrollTop($("#console")[0].scrollHeight);
+            enable();
         }
 
         function failureResut() {
-            alert("Failure!");
+            alert("Execution failed. Your script line may have generated an excessively long output, or the server stopped responding.");
+            enable();
         }
 
         function loadResut() {
+            disable();
             NinjacServiceScript.executeScript($("#scriptarea").val(), successResut, failureResut, null);
         }
 

@@ -287,7 +287,7 @@ CONTENT */
 
 .content #console .bot
 {
-    color:#4f65d5;
+    color:#4458bb;
 }
 
 .content #console .error
@@ -304,4 +304,9 @@ CONTENT */
 .content #variables span
 {
 margin-right: 3em;   
+}
+
+.content #variables
+{
+line-height: 2em; 
 }

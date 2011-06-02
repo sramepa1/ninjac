@@ -16,14 +16,14 @@
 
         function disable() {
             disabled = true;
-            $("#command_enter").disabled = true;
-            $("#command_reset").disabled = true;
+            document.getElementById("command_enter").disabled = true;
+            document.getElementById("command_reset").disabled = true;
         }
 
         function enable() {
             disabled = false;
-            $("#command_enter").disabled = false;
-            $("#command_reset").disabled = false;
+            document.getElementById("command_enter").disabled = false;
+            document.getElementById("command_reset").disabled = false;
         }
 
         //reset
@@ -61,18 +61,13 @@
         }
 
         function successResult(result) {
-            tag = document.createElement("span");
-            tag.className = "human";
-            tag.innerHTML = $("#command").val() + "<br>";
-            document.getElementById('console').appendChild(tag);
-
             var parts = result.split('\|', 2);
             parseVariables(parts[1]);
 
             var tag = document.createElement("span");
             tag.className = "bot";
 
-            if(parts[0].match('error')) {
+            if (parts[0].match('#!')) {
                 tag.className = "bot error";
             } else {
                 tag.className = "bot";
@@ -95,6 +90,12 @@
 
         function loadResult() {
             disable();
+
+            var tag = document.createElement("span");
+            tag.className = "human";
+            tag.innerHTML = $("#command").val() + "<br>";
+            document.getElementById('console').appendChild(tag);
+
             NinjacServiceInteractive.executeLine($("#command").val(), successResult, failureResult, null);
         }
 
@@ -107,8 +108,10 @@
 
             var code = (e.keyCode) ? e.keyCode : e.which;
 
-            if (code == 13 && !disabled) {
-                loadResult();
+            if (code == 13) {
+                if (!disabled) {
+                    loadResult();
+                }
                 return false;
             } else if (code == 3) {
                 return false;
