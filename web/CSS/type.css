@@ -272,7 +272,7 @@ CONTENT */
 }
 
 
-.content #command, .content #ctl00_Main_Enter
+.content #command, .content #ctl00_Main_Enter, #console
 {
     font-family: mono-space,monospace;
 }
@@ -288,7 +288,7 @@ CONTENT */
     width: 6em;
 }
 
-.content pre
+.content pre, #console
 {
     display: block;
     border: 1px solid #c1c9f2;

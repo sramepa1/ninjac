@@ -10,6 +10,8 @@
     <link href="CSS/tripoli.css" rel="stylesheet" type="text/css" />
     <link href="CSS/type.css" rel="stylesheet" type="text/css" />
     <link href="CSS/layout.css" rel="stylesheet" type="text/css" />
+
+    <script src="Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -49,6 +51,8 @@
         <asp:ContentPlaceHolder id="Main" runat="server">
              
         </asp:ContentPlaceHolder>
+
+        <div class="footer">Pavel Šrámek a Martin Šmarda</div>
     </div>
 
     </div>
