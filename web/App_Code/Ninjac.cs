@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.IO;
 using System.Text;
+using System.Globalization;
 
 
 public class Ninjac
@@ -13,9 +14,9 @@ public class Ninjac
     protected string format;
     protected Parser parser;
 
-    public Dictionary<string, double> globalVars { get; set; }
+    public SortedDictionary<string, double> globalVars { get; set; }
     public Stack<Dictionary<string, double>> localVarStack { get; set; }
-    public Dictionary<string, Func> functions { get; set; }
+    public SortedDictionary<string, Func> functions { get; set; }
 
     TextWriter writer;
 
@@ -26,9 +27,9 @@ public class Ninjac
     public Ninjac(bool ia)
     {
         interactive = ia;
-        globalVars = new Dictionary<string, double>();
+        globalVars = new SortedDictionary<string, double>();
         localVarStack = new Stack<Dictionary<string, double>>();
-        functions = new Dictionary<string, Func>();
+        functions = new SortedDictionary<string, Func>();
 
         parser = new Parser(this);
 
@@ -56,12 +57,13 @@ public class Ninjac
 
     public string formatDouble(double d)
     {
-        return d.ToString(format);
+        return d.ToString(format, CultureInfo.InvariantCulture);
     }
 
     public string getVariables()
     {
         StringBuilder b = new StringBuilder();
+
         foreach (var item in globalVars)
         {
             b.AppendLine(String.Format("<span><strong>${0}</strong> = {1}</span> ", item.Key, formatDouble(item.Value)));

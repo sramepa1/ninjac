@@ -22,7 +22,7 @@
         }
 
         function failureReset() {
-            alert("Failure!");
+            alert("Reset failed. Server may not be responding, please check your connection.");
         }
 
         function loadReset() {
@@ -31,7 +31,7 @@
 
 
         //load results
-        function successResut(result) {
+        function successResult(result) {
 
             var tag = document.createElement("span");
 
@@ -45,12 +45,12 @@
 
         }
 
-        function failureResut() {
-            alert("Failure!");
+        function failureResult() {
+            alert("Execution failed. Your script line may have generated an excessively long output, or the server stopped responding.");
         }
 
-        function loadResut() {
-            NinjacServiceInteractive.executeLine($("#command").val(), successResut, failureResut, null);
+        function loadResult() {
+            NinjacServiceInteractive.executeLine($("#command").val(), successResult, failureResult, null);
         }
 
 
@@ -63,7 +63,7 @@
             var code = (e.keyCode) ? e.keyCode : e.which;
 
             if (code == 13) {
-                loadResut();
+                loadResult();
                 return false;
             } else if (code == 3) {
                 return false;
@@ -90,7 +90,7 @@
                             <input id="command" type="text" />
                         </td>
                         <td style="width:50px">
-                            <input id="command_enter" class="command_button" type="button" value="Enter" onclick="loadResut();"/>
+                            <input id="command_enter" class="command_button" type="button" value="Enter" onclick="loadResult();"/>
                         </td>
                     </tr>
                 </table>

@@ -29,7 +29,7 @@ public class Assignment : Statement
         double newVal = val.evaluate();
         n.assignVar(vName, newVal);
 
-        if (n.ia())
+        if (n.ia() && topLevel)
         {
             n.outputLine(string.Format("Variable ${0} is now {1}", vName, n.formatDouble(newVal)));
         }

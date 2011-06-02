@@ -51,7 +51,7 @@ public class FunctionDeclaration : Statement
 
         if (n.ia())
         {
-            n.outputLine(string.Format("Function {0} of {1} arguments successfully declared.", name, function.args.Count));
+            n.outputLine(string.Format("Function {0} of {1} argument{2} successfully declared.", name, function.args.Count, function.args.Count == 1 ? "" : "s"));
         }
     }
 }
