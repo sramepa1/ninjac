@@ -284,3 +284,24 @@ CONTENT */
     background-color: #f0f0f0;
     padding: 1em;
 }
+
+.content #console .bot
+{
+    color:#4f65d5;
+}
+
+.content #console .error
+{
+    color:#D55410;
+}
+
+.content #scriptarea
+{
+    overflow:auto;
+    resize:vertical;
+}
+
+.content #variables span
+{
+margin-right: 3em;   
+}

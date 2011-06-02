@@ -7,49 +7,94 @@
         </Services>
     </asp:ScriptManager>
 
-    <div id="console"></div>
+    <div id="console">
+    
+    </div>
 
     <script type="text/javascript">
+        var disabled;
+
+        function disable() {
+            disabled = true;
+            $("#command_enter").disabled = true;
+            $("#command_reset").disabled = true;
+        }
+
+        function enable() {
+            disabled = false;
+            $("#command_enter").disabled = false;
+            $("#command_reset").disabled = false;
+        }
+
         //reset
         function successReset() {
-
             document.getElementById('console').innerHTML = "";
-
-           // $("#console").scrollTop($("#console")[0].scrollHeight);
-
             $("#command").focus();
-
+            $("#command").select();
+            document.getElementById('variables').innerHTML = "";
+            document.getElementById('info').style.display = "none";
+            enable();
         }
 
         function failureReset() {
             alert("Reset failed. Server may not be responding, please check your connection.");
+            enable();
         }
 
         function loadReset() {
+            disable();
             NinjacServiceInteractive.reset(successReset, failureReset, null);
         }
 
 
         //load results
+        function parseVariables(data) {
+            var container = document.getElementById('variables');
+            container.innerHTML = data;
+
+            if (data == "") {
+                document.getElementById('info').style.display = "none";
+            } else {
+                document.getElementById('info').style.display = "block";
+                container.innerHTML = data;
+            }
+        }
+
         function successResult(result) {
+            tag = document.createElement("span");
+            tag.className = "human";
+            tag.innerHTML = $("#command").val() + "<br>";
+            document.getElementById('console').appendChild(tag);
+
+            var parts = result.split('\|', 2);
+            parseVariables(parts[1]);
 
             var tag = document.createElement("span");
+            tag.className = "bot";
 
-            tag.innerHTML = result;
+            if(parts[0].match('error')) {
+                tag.className = "bot error";
+            } else {
+                tag.className = "bot";
+            }
 
+            tag.innerHTML = parts[0];
             document.getElementById('console').appendChild(tag);
 
             $("#console").scrollTop($("#console")[0].scrollHeight);
 
             $("#command").focus();
-
+            $("#command").select();
+            enable();
         }
 
         function failureResult() {
             alert("Execution failed. Your script line may have generated an excessively long output, or the server stopped responding.");
+            enable();
         }
 
         function loadResult() {
+            disable();
             NinjacServiceInteractive.executeLine($("#command").val(), successResult, failureResult, null);
         }
 
@@ -62,7 +107,7 @@
 
             var code = (e.keyCode) ? e.keyCode : e.which;
 
-            if (code == 13) {
+            if (code == 13 && !disabled) {
                 loadResult();
                 return false;
             } else if (code == 3) {
@@ -95,6 +140,11 @@
                     </tr>
                 </table>
 
+    </div>
+
+    <div id="info" style="display:none">
+    <h3>Proměnné</h3>
+    <div id="variables"></div>
     </div>
 
     <script type="text/javascript">
