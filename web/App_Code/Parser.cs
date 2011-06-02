@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Globalization;
 
 public class Parser
 {
@@ -138,7 +139,7 @@ public class Parser
             switch (t.type)
             {
                 case TokenType.NUM:
-                    stack.Push(new Constant(Double.Parse(t.value)));
+                    stack.Push(new Constant(Double.Parse(t.value, CultureInfo.InvariantCulture)));
                     break;
                 case TokenType.VAR:
                     stack.Push(new Variable(t.value, n));

@@ -236,7 +236,7 @@ return &lt;výraz&gt;
 <tbody>
 <tr><td><code>print &lt;výraz&gt</code></td><td>Výpis hodnoty výrazu na výstup. Nutný v dávkovém režimu.</td></tr>
 <tr><td><code>precision &lt;výraz&gt</code></td><td>Nastavení přesnosti zobrazení výsledků. 
-    Určí počet zobrazených desetinných míst pro veškerý další výstup.</td></tr>
+    Určí počet zobrazených významných číslic pro veškerý další výstup.</td></tr>
 </tbody>
 </table>
 </asp:Content>

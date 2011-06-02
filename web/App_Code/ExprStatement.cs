@@ -65,7 +65,7 @@ public class PrecisionStatement : ExprStatement
 
         if (n.ia())
         {
-            n.outputLine(String.Format("Display set to {0} decimal place{1}.", result, result == 1 ? "" : "s"));
+            n.outputLine(String.Format("Display set to {0} significant digit{1}.", result, result == 1 ? "" : "s"));
         }
     }
 }

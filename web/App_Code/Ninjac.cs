@@ -33,7 +33,7 @@ public class Ninjac
 
         parser = new Parser(this);
 
-        format = "0.############";
+        format = "G12";
 
         initBuiltIn();
     }
@@ -77,16 +77,9 @@ public class Ninjac
         int prec = (int)Math.Round(precision);
 
         prec = Math.Max(1, prec);
-        prec = Math.Min(15, prec);
+        prec = Math.Min(16, prec);
 
-        System.Text.StringBuilder sb = new System.Text.StringBuilder("0.");
-
-        for (int i = 0; i < prec; i++)
-        {
-            sb.Append('#');
-        }
-
-        format = sb.ToString();
+        format = String.Format("G{0}", prec);
 
         return prec;
     }
