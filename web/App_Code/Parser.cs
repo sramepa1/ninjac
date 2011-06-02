@@ -7,8 +7,8 @@ using System.IO;
 public class Parser
 {
     public string oneCharOper { get; set; }
-    public SortedSet<string> twoCharOper { get; set; }
-    public SortedSet<string> keywords { get; set; }
+    public HashSet<string> twoCharOper { get; set; }
+    public HashSet<string> keywords { get; set; }
 
     protected Tokenizer tok;
     protected int line;
@@ -24,8 +24,8 @@ public class Parser
 
         reset();
 
-        keywords = new SortedSet<string>();
-        twoCharOper = new SortedSet<string>();
+        keywords = new HashSet<string>();
+        twoCharOper = new HashSet<string>();
 
         keywords.Add("begin");
         keywords.Add("end");
