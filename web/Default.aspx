@@ -1,28 +1,16 @@
-﻿<%@ Page Language="C#"  CodeFile="Default.aspx.cs" Inherits="_Default" MasterPageFile="~/MasterPage.master" Title="NINJAC - interaktivní mód" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
-<asp:Content ID="InteractiveMode" ContentPlaceHolderID="Main" Runat="Server">
-    <asp:ScriptManager ID="InteractiveModeScriptManager" runat="server">
-</asp:ScriptManager>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-    <div id="console">
-        
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
     </div>
-
-    <div id="commandLine">
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-            <ContentTemplate>
-                <table cellpadding="0" cellspacing="0" width="100%" class="commandHolder">
-                    <tr>
-                        <td>
-                            <input id="command" type="text" />
-                        </td>
-                        <td style="width:50px">
-                            <asp:Button ID="Enter" runat="server" Text="Enter" />
-                        </td>
-                    </tr>
-                </table>
-            </ContentTemplate>
-        </asp:UpdatePanel>
-    </div>
-
-</asp:Content>
+    </form>
+</body>
+</html>
