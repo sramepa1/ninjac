@@ -2,14 +2,14 @@
 
 <asp:Content ID="NinjacHelp" ContentPlaceHolderID="Main" Runat="Server">
 <h2>O programu</h2>
-<p>Program NINJAC (NINJAC Is Not Just A Calculator) je interaktivní programovatelná kalkulačka s řádkovým uživatelským rozhraním. Zároveň jde o interpreta jednoduchého skriptovacího jazyka vytvořeného pro řešení nepříliš složitých matematických úloh. Skriptovací jazyk umožňuje práci s proměnnými, větvení kódu (úplný i neúplný příkaz if), cykly s pevným počtem opakování, s podmínkou na začátku i na konci a deklaraci uživatelských funkcí. Kalkulačka umí vyhodnocovat algebraické výrazy libovolné složitosti a nabízí běžnou sadu operátorů, vestavěných funkcí a konstant.</p>
+<p>Program NINJAC (NINJAC Is Not Just A Calculator) je interaktivní programovatelná kalkulačka s webovým uživatelským rozhraním. Zároveň jde o interpreta jednoduchého skriptovacího jazyka vytvořeného pro řešení nepříliš složitých matematických úloh. Skriptovací jazyk umožňuje práci s proměnnými, větvení kódu (úplný i neúplný příkaz if), cykly s pevným počtem opakování, s podmínkou na začátku i na konci a deklaraci uživatelských funkcí. Kalkulačka umí vyhodnocovat algebraické výrazy libovolné složitosti a nabízí běžnou sadu operátorů, vestavěných funkcí a konstant.</p>
 
 <h2>Použití programu</h2>
 
 <h3>Interaktivní režim</h3>
-<p>Interaktivní režim je výchozí při spuštění bez argumentů. V interaktivním režimu se NINJAC chová takto:</p>
+<p>Interaktivní režim je výchozí při otevření webu. V interaktivním režimu se NINJAC chová takto:</p>
 <ul>
-<li>Vstup je načítán po řádcích, uživatel tedy napíše příkazy nebo výrazy a odřádkování spustí jejich vyhodnocení.</li>
+<li>Vstup je načítán po řádcích, uživatel tedy napíše příkazy nebo výrazy a spustí jejich vyhodnocení.</li>
 <li>Výsledek výrazů na místě příkazu není zahozen, ale vypsán – pro jednoduché vstupy se tedy program skutečně chová jako kalkulačka.</li>
 <li>Ostatní příkazy, jsou-li na nejvyšší úrovni ve skriptu, dají na výstupu najevo svůj úspěšný průběh.</li>
 <li>Ať už je vstup zpracován úspěšně, nebo skončí chybou, vnitřní stav je před dalším vstupem vymazán, kromě tabulky funkcí a globálních proměnných.</li>
@@ -17,7 +17,7 @@
 </ul>
 
 <h3>Skriptový režim</h3>
-<p>Skriptový režim se zapíná přepínačem „-s“ a slouží pro práci v rouře nebo se souborovým vstupem. V tomto režimu NINJAC načítá celý vstup (až po EOF) a následně spustí načtený program.</p>
+<p>Skriptový režim je k dispozici na zvláštní záložce webu a slouží pro práci se souborovým vstupem. V tomto režimu NINJAC načítá celý vstup (až do konce souboru) a následně spustí načtený program.</p>
 <ul>
 <li>Jediné, co se dostane na výstup, jsou výsledky vyhodnocení výrazů za příkazy print a případná chybová hlášení.</li>
 <li>Nastane-li chyba, NINJAC oznámí, na kterém řádku vstupu k ní došlo (i v případě, že se jedná o chybu za běhu – pozice problémových příkazů ve zdroji je známa), a ukončí se s nenulovou návratovou hodnotou.</li>
@@ -56,7 +56,12 @@ set $test := 40 + 2
 
 <p>Další podporované vlastnosti jsou větvení kódu, cykly, bloky příkazů, funkce (včetně deklarace uživatelských funkcí), přiřazování hodnot proměnným, příkaz pro výstup (v dávkovém režimu nutný), příkaz pro nastavení zobrazované přesnosti a příkaz pro ukončení běhu interpreta.</p>
 
-<p>Syntaxe zápisu programů je zčásti převzata z jazyka Pascal, především pokud jde o roli středníku – jde striktně o oddělovač příkazů, nikoliv o ukončení příkazu. Používá se tedy pouze a právě tam, kde je potřeba oddělit dva příkazy na stejné úrovni (uvnitř bloku), jiné použití povede k chybě parsování (bude očekáván další příkaz). Na konci programu není nic – koncem je buď odřádkování v interaktivním nebo EOF v dávkovém režimu.</p>
+<p>Syntaxe zápisu programů je zčásti převzata z jazyka Pascal, především pokud jde o 
+    roli středníku – jde striktně o oddělovač příkazů, nikoliv o ukončení příkazu. 
+    Používá se tedy pouze a právě tam, kde je potřeba oddělit dva příkazy na stejné 
+    úrovni (uvnitř bloku), jiné použití povede k chybě parsování (bude očekáván 
+    další příkaz). Na konci programu není nic – koncem je buď konec řádku v 
+    interaktivním nebo konec souboru v dávkovém režimu.</p>
 
 <p>Jazyk je case-sensitive pro všechna klíčová slova, názvy proměnných i funkcí a je do značné míry whitespace-insensitive. Proměnná je uvozena znakem $, po kterém bezprostředně následuje její název (řetězec malých/velkých písmen). Volání funkce není uvozeno nijak a její název je také řetězec malých/velkých písmen.</p>
 
@@ -106,10 +111,13 @@ set $test := 40 + 2
 <li>Se dvěma parametry: pow, max, min</li>
 </ul>
 
-<p>Většina vestavěných funkcí je přímo přejata (název, chování a vlastně i implementace) z matematické knihovny C++. Liší se pouze log (přejmenovaný log10) a přibyly pi, e (konstantní funkce, odpovídají M_PI a M_E), not, max, min (jejich význam je zřejmý z názvu) a sgn (signum).</p>
+<p>Většina vestavěných funkcí je přímo přejata (název, chování a vlastně i implementace) z matematické knihovny C++. Liší se pouze log (přejmenovaný log10) a přibyly pi, e (konstantní funkce, odpovídají 
+    konstantám matematické knihovny), not, max, min (jejich význam je zřejmý z názvu) a sgn (signum).</p>
 
 <h3>Proměnné</h3>
-<p>NINJAC rozlišuje globální a lokální proměnné. Globální jsou všechny proměnné ve vlastním skriptu včetně případné řídící proměnné for-cyklu, rozsahy platnosti (scope) podporovány nejsou. Lokální proměnné jsou uvažovány ve funkcích a mohou zastínit své stejnojmenné globální protějšky. Je-li globální proměnná zastíněna, nelze k ní z funkce přistoupit. Při vyhodnocování hodnoty proměnné se postupuje takto:</p>
+<p>NINJAC rozlišuje globální a lokální proměnné. Globální jsou všechny proměnné ve vlastním skriptu včetně případné řídící proměnné for-cyklu, rozsahy platnosti (scope) podporovány nejsou. 
+    Tabulku globálních proměnných a jejich hodnot NINJAC v interaktivním módu 
+    vypisuje. Lokální proměnné jsou uvažovány ve funkcích a mohou zastínit své stejnojmenné globální protějšky. Je-li globální proměnná zastíněna, nelze k ní z funkce přistoupit. Při vyhodnocování hodnoty proměnné se postupuje takto:</p>
 
 <ol>
 <li>Nenachází-li se řízení ve funkci, hledá se v globálních proměnných</li>
@@ -216,13 +224,16 @@ return &lt;výraz&gt;
 
 <p>Je-li nalezeno volání funkce, je naparsováno i s argumenty tak, jak bylo zapsáno. Existence funkce a souhlas počtu argumentů se testují až za běhu – to umožňuje zápis rekurzivních funkcí bez nutnosti dopředné deklarace hlavičky.</p>
 
+<h3>Zvláštní příkazy</h3>
+
 <table>
 <thead>
 <tr><th>Příkaz</th><th>význam</th></tr>
 </thead>
 <tbody>
 <tr><td><code>print &lt;výraz&gt</code></td><td>Výpis hodnoty výrazu na výstup. Nutný v dávkovém režimu.</td></tr>
-<tr><td><code>precision &lt;výraz&gt</code></td><td>Nastavení přesnosti zobrazení výsledků. Odpovídá manipulátoru setprecision.</td></tr>
+<tr><td><code>precision &lt;výraz&gt</code></td><td>Nastavení přesnosti zobrazení výsledků. 
+    Určí počet zobrazených desetinných míst pro veškerý další výstup.</td></tr>
 </tbody>
 </table>
 </asp:Content>
