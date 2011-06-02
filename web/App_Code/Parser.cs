@@ -82,7 +82,7 @@ public class Parser
 
         if (t.type == TokenType.END)
         {
-            n.outputLine("What am I supposed to do with empty input?!");
+            n.outputError("What am I supposed to do with empty input?!");
             return;
         }
 

@@ -8,12 +8,10 @@ public abstract class Loop : Statement
     protected Ninjac n;
     protected bool topLevel;
 
-    protected uint cnt;
-
     protected int lin;
     public Statement stmt { get; set; }
 
-    public static readonly uint LOOP_MAX = uint.MaxValue / 1024;
+    public static readonly uint LOOP_MAX = 20000000;
 
     public Loop(bool top, Ninjac ninjac, int line)
     {
@@ -21,7 +19,14 @@ public abstract class Loop : Statement
         n = ninjac;
         stmt = null;
         line = lin;
-        cnt = 0;
+    }
+
+    public void checkCounter()
+    {
+        if (++n.loopCounter >= LOOP_MAX)
+        {
+            throw new NinjacException(true, "loop limit exceeded", lin);
+        }
     }
 
     public abstract void execute();
@@ -58,13 +63,8 @@ public class ForLoop : Loop
             stmt.execute();
             varValue = up ? varValue + step : varValue - step;
 
-            if (++cnt == LOOP_MAX)
-            {
-                throw new NinjacException(true, "infinite loop", lin);
-            }
+            checkCounter();
         }
-
-        cnt = 0;
 
         if ((varValue == from))
         {
@@ -104,15 +104,9 @@ public class RepeatLoop : CondLoop
         do
         {
             stmt.execute();
-
-            if (++cnt == LOOP_MAX)
-            {
-                throw new NinjacException(true, "infinite loop", lin);
-            }
+            checkCounter();    
         
         } while (Math.Abs(cond.evaluate()) <= Ninjac.DELTA);
-
-        cnt = 0;
 
         if (n.ia() && topLevel)
         {
@@ -133,14 +127,8 @@ public class WhileLoop : CondLoop
         while (Math.Abs(cond.evaluate()) > Ninjac.DELTA)
         {
             stmt.execute();
-
-            if (++cnt == LOOP_MAX)
-            {
-                throw new NinjacException(true, "infinite loop", lin);
-            }
+            checkCounter();
         }
-
-        cnt = 0;
 
         if (n.ia() && topLevel)
         {

@@ -21,6 +21,7 @@ public class Ninjac
     TextWriter writer;
 
     public Block program { get; set; }
+    public uint loopCounter { get; set; }
 
     public static readonly double DELTA = 1e-12;
 
@@ -66,7 +67,7 @@ public class Ninjac
 
         foreach (var item in globalVars)
         {
-            b.AppendLine(String.Format("<span><strong>${0}</strong> = {1}</span> ", item.Key, formatDouble(item.Value)));
+            b.AppendLine(String.Format("<span><strong>${0}</strong>&nbsp;=&nbsp;{1}</span> ", item.Key, formatDouble(item.Value)));
         }
         return b.ToString();
     }
@@ -88,6 +89,7 @@ public class Ninjac
     public void run(TextReader reader, TextWriter writer)
     {
         this.writer = writer;
+        loopCounter = 0;
         program = new Block(false, this);
         try
         {
@@ -97,7 +99,7 @@ public class Ninjac
         catch (NinjacException e)
         {
             outputException(e);
-            if (!interactive) outputLine(string.Format("  on line {0}. Script execution stopped.", e.line));
+            if (!interactive) outputError(string.Format("  on line {0}. Script execution stopped.", e.line));
         }
         parser.reset();
         localVarStack.Clear();
@@ -106,13 +108,18 @@ public class Ninjac
 
     public void outputException(NinjacException e)
     {
-        outputLine(String.Format("{0} error: {1}", (e.isRuntime ? "Runtime" : "Parse"), e.message));
+        outputError(String.Format("{0} error: {1}", (e.isRuntime ? "Runtime" : "Parse"), e.message));
     }
 
 
     public void outputLine(string line)
     {
         writer.WriteLine(String.Concat("#&gt; ", line, "<br />"));
+    }
+
+    public void outputError(string line)
+    { 
+        writer.WriteLine(String.Concat("#! ", line, "<br />"));
     }
 
 

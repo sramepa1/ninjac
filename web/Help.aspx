@@ -208,8 +208,8 @@ for &lt;proměnná&gt; from &lt;výraz&gt; to &lt;výraz&gt; [step &lt;výraz&gt
 </pre>
 </code>
 
-<p>Kvůli hrozbě zahlcení webu je běh každé smyčky omezen na přibližně dva miliony 
-    opakování. Při překročení tohoto limitu je ohlášena chyba &quot;nekonečná smyčka&quot;.</p>
+<p>Kvůli hrozbě zahlcení webu je běh všech smyček ve skriptu globálně omezen na přibližně dvacet milionů
+    opakování. Při překročení tohoto limitu je ohlášena chyba.</p>
 
 <h3>Funkce</h3>
 <p>NINJAC dovoluje deklaraci uživatelských funkcí. Deklarace funkce musí být příkaz nejvyšší úrovně (nelze deklarovat podmíněně, v cyklech nebo v jiných funkcích) a jméno funkce nesmí být obsazeno (pozor na vestavěné funkce). Přestože lze funkce deklarovat i v interaktivním režimu, počítá se s nimi hlavně pro skripty, takže ani příliš nevadí, že jednou deklarované funkce už se zbavíte jen restartem interpreta.</p>
