@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Text;
 
 
 public class Ninjac
@@ -12,29 +13,24 @@ public class Ninjac
     protected string format;
     protected Parser parser;
 
-    protected TextWriter writer;
-    protected TextReader reader;
-
     public Dictionary<string, double> globalVars { get; set; }
     public Stack<Dictionary<string, double>> localVarStack { get; set; }
     public Dictionary<string, Func> functions { get; set; }
+
+    TextWriter writer;
 
     public Block program { get; set; }
 
     public static readonly double DELTA = 1e-12;
 
-    public Ninjac(bool ia, TextWriter outWriter, TextReader inReader)
+    public Ninjac(bool ia)
     {
         interactive = ia;
         globalVars = new Dictionary<string, double>();
         localVarStack = new Stack<Dictionary<string, double>>();
         functions = new Dictionary<string, Func>();
 
-        writer = outWriter;
-        reader = inReader;
-
         parser = new Parser(this);
-        program = new Block(false, this);
 
         format = "0.############";
 
@@ -63,6 +59,16 @@ public class Ninjac
         return d.ToString(format);
     }
 
+    public string getVariables()
+    {
+        StringBuilder b = new StringBuilder();
+        foreach (var item in globalVars)
+        {
+            b.AppendLine(String.Format("${0} = {1}<br/>", item.Key, item.Value));
+        }
+        return b.ToString();
+    }
+
     public int setPrecision(double precision)
     {
         precision = Math.Abs(precision);
@@ -84,25 +90,22 @@ public class Ninjac
     }
 
 
-    public void run()
+    public void run(TextReader reader, TextWriter writer)
     {
-        if (interactive)
+        this.writer = writer;
+        program = new Block(false, this);
+        try
         {
-
+            parser.parse(reader);
+            program.execute();
         }
-        else
+        catch (NinjacException e)
         {
-            try
-            {
-                parser.parse(reader);
-                program.execute();
-            }
-            catch (NinjacException e)
-            {
-                outputException(e);
-                outputLine(string.Format("  on line {0}. Script execution stopped.", e.line));
-            }
+            outputException(e);
+            if (!interactive) outputLine(string.Format("  on line {0}. Script execution stopped.", e.line));
         }
+        parser.reset();
+        localVarStack.Clear();
     }
 
 

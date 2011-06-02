@@ -21,8 +21,8 @@ public class NinjacServiceScript : System.Web.Services.WebService
     public string executeScript(string script)
     {
         StringWriter output = new StringWriter();
-        Ninjac n = new Ninjac(false, output, new StringReader(script));
-        n.run();
+        Ninjac n = new Ninjac(false);
+        n.run(new StringReader(script), output);
         return output.GetStringBuilder().ToString();
     }
 

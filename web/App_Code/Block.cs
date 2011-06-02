@@ -33,7 +33,7 @@ public class Block : Statement
             stmt.execute();
         }
 
-        if (n.ia())
+        if (n.ia() && topLevel)
         {
             n.outputLine("OK");
         }
