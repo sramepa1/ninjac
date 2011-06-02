@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+  <item text="Interaktivní mód" url="~/Default.aspx" />
+  <item text="Skriptový mód" url="~/Script.aspx" />
+  <item text="Nápověda" url="~/Help.aspx" />
+</menu>

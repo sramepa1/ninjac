@@ -1,0 +1,297 @@
+/*
+ *   Tripoli is a generic CSS standard for HTML rendering. 
+ *   Copyright (C) 2007 David Hellsing
+ *   
+ *   Modified by Martin Šmarda 2011
+ *   
+ *   http://devkick.com/lab/tripoli/
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *   
+**/
+/*
+_______________________________
+CONTENT */
+
+.menu
+{
+    font-size:2em;
+}
+
+.menu table
+{
+    margin: auto;
+}
+
+
+.content
+{
+    font-size:1.35em;
+    line-height:1.5em;
+    color: #323232;
+    font-family: Calibri, 'Arial CE', Arial, sans-serif;
+    letter-spacing: 0.8px;
+}
+
+.content h1
+{
+    font-family: Calibri, 'Arial CE', Arial, sans-serif;
+    font-size: 2.2em;
+    line-height:1;
+    margin:0.5em 0 0.5em 0;
+    text-align: center;
+    color: #D55410;
+}
+
+.content h2
+{
+    font-family: Calibri, 'Arial CE', Arial, sans-serif;
+    font-size:1.8em;
+    line-height:1;
+    margin:0.5em 0 0.5em 0;
+    text-align: left;
+    color: #7c8de3;
+}
+
+.content h3
+{
+    font-family: Calibri, 'Arial CE', Arial, sans-serif;
+    font-size:1.4em;
+    line-height:1;
+    margin:0.5em 0 0.5em 0;
+    text-align: left;
+    color: #9d3700;
+}
+
+.content h4
+{
+    font-family: Calibri, 'Arial CE', Arial, sans-serif;
+    font-size:1.1em;
+    line-height:1;
+    margin:0.5em 0 0.5em 0;
+    text-align: left;
+    color: #92a1f1;
+}
+
+.content a
+{
+    color: #7c8de3;
+    text-decoration: underline;
+}
+
+.content a:hover
+{
+    color: #d55410;
+}
+
+.content hr
+{
+    display:block;
+    background:#7c8de3;
+    color:black;
+    width:100%;
+    height:1px;
+    border:none;
+}
+
+.content ul
+{
+    list-style:disc outside;
+    color: #D55410;
+}
+
+.content ol
+{
+    list-style:decimal outside;
+    color: #4f65d5;
+}
+
+.content ul span, .content ol span
+{
+    color: #ccc;
+}
+
+.content hr,.content p,.content ul,.content ol,.content dl,.content pre, .content address,.content table,.content form
+{
+    margin-bottom:1.6em;
+}
+
+.content p
+{
+    
+}
+
+.content p+p
+{
+    margin-top:-.8em;
+}
+
+.content input, .content select, .content option, .content textarea
+{
+    border: 1px solid #c1c9f2;
+    background-color: #f0f0f0;
+    color: #323232;
+}
+
+.content fieldset
+{
+    margin:1.6em 0;
+    padding:1.6em;
+    border: 1px solid #555;
+}
+
+.content legend
+{
+    padding-left:.8em;
+    padding-right:.8em;
+}
+
+.content fieldset>*:first-child
+{
+    margin-top:0;
+}
+
+.content textarea,.content input[type='text']
+{
+    padding: 1px 2px;
+}
+
+.content input
+{
+    padding: 1px 2px;
+}
+
+.content select
+{
+    padding:.2em .1em 0;
+}
+
+.content select[multiple]
+{
+    margin-bottom:.8em;
+}
+
+.content option
+{
+    padding:0 .4em .1em;
+}
+
+.content button, .content input[type='button']
+{
+    padding: 1px 2px;
+    border: 1px solid #c1c9f2;
+    background-color: #f0f0f0;
+    color: #323232;
+}
+
+
+.content input[type='radio']
+{
+    position:relative;
+    bottom:-.2em;
+}
+
+.content table
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+    border: 1px solid #555;
+	table-layout: auto;
+	margin: 10px 0 10px 0;
+	float: none;
+	display: table;
+}
+
+.content table caption
+{
+	font-size: 100%;
+	font-style: italic;
+	caption-side: top;
+	padding: 2px 0 2px 0.5em;
+	page-break-after: avoid;
+}
+
+.content table td, .content table th
+{
+	font-size: 100%;
+    font-weight: normal;
+	padding: 0.25em 0.5em;
+	vertical-align: middle;
+    border: 1px solid #555;
+}
+
+.content table th, .content table thead td, .content table tfoot td
+{
+	background-color: #c1c9f2;
+}
+
+.content table th, .content table thead td
+{
+    color: #D55410;
+}
+
+.content dt
+{
+    margin-top:.8em;
+    margin-bottom:.4em;
+}
+
+.content ul,.content ol
+{
+    margin-left:2.2em;
+}
+
+.content caption,.content form div
+{
+    padding-bottom:.8em;
+}
+
+.content ul ul,content ol ul,.content ul ol,content ol ol
+{
+    margin-bottom:0;
+}
+
+.content .center
+{
+    margin: auto;
+}
+
+.content .ninjac
+{
+    font-size: 1em;
+    line-height: 1;
+    margin: 0.5em 0 1em 0;
+    text-align: center;
+    color: #c5c5c5;
+}
+
+.commandHolder, .commandHolder td
+{
+    border: none !important;
+}
+
+
+.content #command, .content #ctl00_Main_Enter
+{
+    font-family: mono-space,monospace;
+}
+
+.content #command
+{
+    width: 100%;
+}
+
+.content #ctl00_Main_Enter
+{
+    border: 1px solid #D55410;
+    width: 6em;
+}
+
+.content pre
+{
+    display: block;
+    border: 1px solid #c1c9f2;
+    background-color: #f0f0f0;
+    padding: 1em;
+}

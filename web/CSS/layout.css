@@ -1,0 +1,43 @@
+﻿
+html,body{height:100%;/*background: #0f0000 url('../images/bgr.png') center top repeat-y scroll;*/}
+body{padding:1em;}
+
+#all{max-width:1024px;min-width:500px;min-height:100%;overflow:hidden;margin:auto;}
+
+/*#all{margin:auto;width:890px;position:relative;z-index:10;}
+    #top-curve{width:644px;height:107px;position:absolute;top:0;left:23px;background:url('../images/tm-curve.png') left top no-repeat scroll;z-index:40}
+    #left-curve{width:86px;height:712px;position:absolute;top:0;left:-63px;background:url('../images/lt-curve.png') left top no-repeat scroll;z-index:40}
+    #right-top-curve{width:149px;height:29px;position:absolute;top:0;right:-37px;background:url('../images/rt-curve2.png') left top no-repeat scroll;z-index:40}
+    #right-middle-curve{width:76px;height:684px;position:absolute;top:29px;right:-47px;background:url('../images/rm-curve2.png') left top no-repeat scroll;z-index:40}
+
+    #white-line{width:562px;height:1px;position:absolute;top:118px;left:0;background:url('../images/white-line.png') left top no-repeat scroll;z-index:30}
+    #green-line{width:692px;height:1px;position:absolute;top:152px;left:0;background:url('../images/green-line.png') left top no-repeat scroll;z-index:30}
+    #red-line{width:693px;height:1px;position:absolute;top:186px;left:0;background:url('../images/red-line.png') left top no-repeat scroll;z-index:30}
+
+#header{width:890px;height:189px;}
+    #logo{position:absolute;top:25px;left:562px;z-index:20}
+    #nav1{width:510px;height:18px;padding:8px 0 8px 24px;position:absolute;top:118px;overflow:hidden}
+    #nav2{width:620px;height:18px;padding:8px 0 8px 48px;position:absolute;top:152px;overflow:hidden}
+
+#left{float:left;width:150px;padding:32px 24px 24px 24px;}
+    #left img{margin-bottom:24px;}
+#right{width:654px;min-height:100%;margin-left:198px;padding:16px 38px 24px 0;}
+#footer{width:890px;height:40px;clear:both;padding:24px 24px 24px 198px}
+
+/*
+#header{width:915px;height:200px;background:url('../images/top.png') center no-repeat;position:relative;z-index:10}
+#left{float:left;width:183px;min-height:200px;padding:0 25px 0px 10px;margin:0 0 0 52px;z-index:15;position:relative;}
+#right{width:570px;min-height:100%;margin:0 60px 0 270px;padding:20px 10px 20px 10px;position:relative;z-index:15;}
+#footer{width:570px;height:40px;clear:both;margin:0 40px 0 40px;padding:10px 25px 10px 240px;background:white url('../images/footer.png') -35px top no-repeat}
+
+#title{position:absolute;left:113px;top:24px;z-index:15}
+
+*/
+#commandLine
+{
+    width:80%;
+    margin: auto;
+}
+
+
+
