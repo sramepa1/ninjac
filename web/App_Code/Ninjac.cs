@@ -64,7 +64,7 @@ public class Ninjac
         StringBuilder b = new StringBuilder();
         foreach (var item in globalVars)
         {
-            b.AppendLine(String.Format("${0} = {1}<br/>", item.Key, item.Value));
+            b.AppendLine(String.Format("<span><strong>${0}</strong> = {1}</span> ", item.Key, formatDouble(item.Value)));
         }
         return b.ToString();
     }
