@@ -114,12 +114,12 @@ public class Ninjac
 
     public void outputLine(string line)
     {
-        writer.WriteLine(String.Concat("#&gt; ", line, "<br />"));
+        writer.WriteLine(String.Concat("<span class=\"bot\">#&gt; ", line, "<br /></span>"));
     }
 
     public void outputError(string line)
-    { 
-        writer.WriteLine(String.Concat("#! ", line, "<br />"));
+    {
+        writer.WriteLine(String.Concat("<span class=\"bot error\">#! ", line, "<br /></span>"));
     }
 
     protected void initBuiltIn()
