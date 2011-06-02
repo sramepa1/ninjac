@@ -14,17 +14,6 @@
 _______________________________
 CONTENT */
 
-.menu
-{
-    font-size:2em;
-}
-
-.menu table
-{
-    margin: auto;
-}
-
-
 .content
 {
     font-size:1.35em;
@@ -257,7 +246,7 @@ CONTENT */
     margin: auto;
 }
 
-.content .ninjac
+.content .ninjac, .content #footer
 {
     font-size: 1em;
     line-height: 1;
@@ -272,20 +261,20 @@ CONTENT */
 }
 
 
-.content #command, .content #ctl00_Main_Enter, #console
+.content #command, #console
 {
     font-family: mono-space,monospace;
 }
 
 .content #command
 {
-    width: 100%;
+    width: 99%;
 }
 
-.content #ctl00_Main_Enter
+.content .command_button
 {
-    border: 1px solid #D55410;
-    width: 6em;
+    border: 1px solid #D55410 !important;
+    width: 100%;
 }
 
 .content pre, #console
