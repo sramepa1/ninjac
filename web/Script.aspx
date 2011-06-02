@@ -19,6 +19,8 @@
 
             document.getElementById("command_enter").className = "disabled";
             document.getElementById("command_clean").className = "disabled";
+
+            document.body.style.cursor = 'wait';
         }
 
         function enable() {
@@ -28,6 +30,8 @@
 
             document.getElementById("command_enter").className = "command_button";
             document.getElementById("command_clean").className = "command_button";
+
+            document.body.style.cursor = 'default';
         }
 
         //clean
@@ -39,19 +43,8 @@
         //load results
         function successResut(result) {
             var console = document.getElementById('scriptConsole');
-            console.innerHTML = "";
-
-            var tag = document.createElement("span");
-            tag.className = "bot";
-
-            if (result.match('#!')) {
-                tag.className = "bot error";
-            } else {
-                tag.className = "bot";
-            }
-
-            tag.innerHTML = result;
-            console.appendChild(tag);
+            
+            console.innerHTML += result;
 
             $("#scriptConsole").scrollTop($("#scriptConsole")[0].scrollHeight);
             enable();
@@ -64,6 +57,7 @@
 
         function loadResut() {
             disable();
+            document.getElementById('scriptConsole').innerHTML = "";
             NinjacServiceScript.executeScript($("#scriptarea").val(), successResut, failureResut, null);
         }
 

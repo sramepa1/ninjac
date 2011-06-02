@@ -19,6 +19,8 @@
 
             document.getElementById("command_enter").className = "disabled";
             document.getElementById("command_reset").className = "disabled";
+
+            document.body.style.cursor = 'wait';
         }
 
         function enable() {
@@ -28,6 +30,8 @@
 
             document.getElementById("command_enter").className = "command_button";
             document.getElementById("command_reset").className = "command_button";
+
+            document.body.style.cursor = 'default';
         }
 
         //reset
@@ -66,19 +70,9 @@
 
         function successResult(result) {
             var parts = result.split('\|', 2);
+
             parseVariables(parts[1]);
-
-            var tag = document.createElement("span");
-            tag.className = "bot";
-
-            if (parts[0].match('#!')) {
-                tag.className = "bot error";
-            } else {
-                tag.className = "bot";
-            }
-
-            tag.innerHTML = parts[0];
-            document.getElementById('console').appendChild(tag);
+            document.getElementById('console').innerHTML += parts[0];
 
             $("#console").scrollTop($("#console")[0].scrollHeight);
 
