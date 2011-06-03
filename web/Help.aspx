@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Help.aspx.cs" Inherits="Help" MasterPageFile="~/MasterPage.master" Title="NINJAC - nápověda" %>
+﻿<%@ Page Language="C#" ViewStateMode="Disabled" AutoEventWireup="true" CodeFile="Help.aspx.cs" Inherits="Help" MasterPageFile="~/MasterPage.master" Title="NINJAC - nápověda" %>
 
 <asp:Content ID="NinjacHelp" ContentPlaceHolderID="Main" Runat="Server">
 <h2>O programu</h2>
@@ -20,7 +20,7 @@
 <p>Skriptový režim je k dispozici na zvláštní záložce webu a slouží pro práci se souborovým vstupem. V tomto režimu NINJAC načítá celý vstup (až do konce souboru) a následně spustí načtený program.</p>
 <ul>
 <li>Jediné, co se dostane na výstup, jsou výsledky vyhodnocení výrazů za příkazy print a případná chybová hlášení.</li>
-<li>Nastane-li chyba, NINJAC oznámí, na kterém řádku vstupu k ní došlo (i v případě, že se jedná o chybu za běhu – pozice problémových příkazů ve zdroji je známa), a ukončí se s nenulovou návratovou hodnotou.</li>
+<li>Nastane-li chyba, NINJAC oznámí, na kterém řádku vstupu k ní došlo (i v případě, že se jedná o chybu za běhu – pozice problémových příkazů ve zdroji je známa), a ukončí vyhodnocování skriptu.</li>
 </ul>
 
 <h3>Příklady použití</h3>
@@ -60,8 +60,7 @@ set $test := 40 + 2
     roli středníku – jde striktně o oddělovač příkazů, nikoliv o ukončení příkazu. 
     Používá se tedy pouze a právě tam, kde je potřeba oddělit dva příkazy na stejné 
     úrovni (uvnitř bloku), jiné použití povede k chybě parsování (bude očekáván 
-    další příkaz). Na konci programu není nic – koncem je buď konec řádku v 
-    interaktivním nebo konec souboru v dávkovém režimu.</p>
+    další příkaz). Na konci programu není nic – koncem je fyzický konec vstupu.</p>
 
 <p>Jazyk je case-sensitive pro všechna klíčová slova, názvy proměnných i funkcí a je do značné míry whitespace-insensitive. Proměnná je uvozena znakem $, po kterém bezprostředně následuje její název (řetězec malých/velkých písmen). Volání funkce není uvozeno nijak a její název je také řetězec malých/velkých písmen.</p>
 
@@ -143,13 +142,13 @@ set $test := 40 + 2
 
 <code>
 <pre>
-$myVar + 1                      # vyhodnoceno na nulu, platny vyraz
+$myVar + 1                      # vyhodnoceno na nulu, platný výraz
 #> 1
-set $myVar := 10                # prirazeni
+set $myVar := 10                # přiřazení
 #> Variable $myVar is now 10
-set $myVar : $myVar + 1         # take prirazeni
+set $myVar : $myVar + 1         # také přiřazeni
 #> Variable $myVar is now 11
-print $myVar + 10               # vyhodnoceni – $myVar je i sam o sobe vyraz
+print $myVar + 10               # vyhodnocení – $myVar je i sám o sobě výraz
 #> 21
 </pre>
 </code>
